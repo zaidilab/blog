@@ -1,0 +1,188 @@
+---
+title: Why we expect genetic differences between populations to be zero
+author: admin
+date: '2021-03-14'
+slug: genetic-difference-between-populations
+categories:
+  - main
+tags:
+  - drift
+  - effect size
+  - genetic drift
+  - genetic value
+  - group-differences
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2021-03-14T16:03:36-04:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+<link href="{{< relref "post/2021-03-14-genetic-difference-between-populations/index.en.html" >}}index.en_files/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="{{< relref "post/2021-03-14-genetic-difference-between-populations/index.en.html" >}}index.en_files/anchor-sections/anchor-sections.js"></script>
+
+
+<p>We expect the genetic difference between two (or an arbitrary number of) groups that diverged from some common ancestral population to be zero under neutrality. This is a well-known result that I feel like isn’t discussed enough, especially in discussions around mean differences in traits such as IQ and educational attainment. I can’t comment on the validity of these phenotypes and I don’t (and will not) wade into loaded conversations about how much of the variance underlying these traits is heritable and in which direction. However, I sense that there are misconceptions among students about the <em>expectation</em> of the mean genetic difference underlying a neutrally evolving phenotype, and I’m casually here to set the record straight.</p>
+<p>So what do we mean when we say that the expectation of the mean difference between populations is exactly zero? Does that mean that we don’t expect to see any differences between populations? As we will see, these two questions are asking different things.</p>
+<div id="the-expected-genetic-value-in-a-population" class="section level2">
+<h2>The expected genetic value in a population</h2>
+<p>To answer these questions, we must first talk about genetic value and figure out what it’s expectation is in a single (randomly mating) population. Let’s begin (as we do) with a generative model for the phenotype:</p>
+<p><span class="math display">\[y = g + e\]</span></p>
+<p>where <span class="math inline">\(g = \sum_{i = 1}^M \beta_i x_i\)</span> is the genetic value (summed across <span class="math inline">\(M\)</span> loci) and <span class="math inline">\(e\)</span> is random (environmental) error. I like to think of the genetic value as the expected phenotype of an individual given their genotype (<span class="math inline">\(x\)</span>): <span class="math inline">\(\mathbb{E}(y|x)\)</span>. You can also (informally) think of it as the phenotype of an individual that can be predicted from their genotype.</p>
+<p>Assuming only additive effects, we can write the genetic value of each genotype at the <span class="math inline">\(i^{th}\)</span> (biallelic) locus (<span class="math inline">\(x_i \in \{0,1,2\}\)</span>) as <span class="math inline">\(\mathbb{E}(y|x_i = 0) = 0\)</span>, <span class="math inline">\(\mathbb{E}(y|x_i = 1) = \beta_i\)</span>, and <span class="math inline">\(\mathbb{E}(y|x_i = 2) = 2\beta_i\)</span> <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>. From this, we can get the mean genetic value in the population by marginalization. Let’s denote the frequency of the <span class="math inline">\(i^{th}\)</span> variant in the population as <span class="math inline">\(f_i\)</span>. Then,</p>
+<p><span class="math display">\[\begin{aligned}
+\mathbb{E}(y) = &amp; \mathbb{E}\{\mathbb{E}(y|x_i)\} \\
+= &amp; \mathbb{E}(y|x_i = 0)\mathbb{P}(x_i = 0) + \mathbb{E}(y|x_i = 1)\mathbb{P}(x_i = 1) + \\ &amp; \mathbb{E}(y|x_i = 2)\mathbb{P}(x_i = 2) \\
+= &amp; 0(1 - f_i)^2 + \beta_i\{2 f_i (1 - f_i)\} + 2\beta_i(f_{i}^2) \\
+= &amp; 2\beta_i f_i - 2\beta_i f_i^2 + 2\beta_i f_i ^2 \\
+= &amp; 2\beta_i f_i
+\end{aligned}\]</span></p>
+<p>Where <span class="math inline">\(\mathbb{P}(x_i = 0)\)</span> is the frequency of individuals carrying 0 copies of the (effect) allele in a randomly mating population, <span class="math inline">\(\mathbb{P}(x_i = 1)\)</span> is the frequency of individuals carrying 1 copy and so on. Aggregating this across multiple independent (unlinked) causal loci gives us the mean genetic value in a single population: <span class="math inline">\(\mathbb{E}(y) = 2\sum_{i=1}^M\beta_i f_i\)</span>. To demonstrate this, note that <span class="math inline">\(\mathbb{E}(y|x_i) = \beta_ix_i\)</span> and <span class="math inline">\(\mathbb{E}(y|x) = \sum_i^M \beta_ix_i\)</span>. Therefore,</p>
+<p><span class="math display">\[\begin{aligned}
+\mathbb{E}(y) = &amp; \mathbb{E}\{\mathbb{E}(y|x)\} \\
+= &amp; \mathbb{E}\left( \sum_{i= 1}^M \beta_i x_i \right) = \sum_{i = 1}^M \beta_i \mathbb{E}\left( x_i \right) \\
+= &amp; \sum_{i = 1}^M \beta_i 2 f_i = 2 \sum_{i = 1}^M \beta_i f_i 
+\end{aligned}\]</span></p>
+<p>From this it follows that the mean genetic value in populations 1 and 2 are <span class="math inline">\(\mathbb{E}(g_1) = 2\sum_{i = 1}^M\beta_i f_{i}^{(1)}\)</span> and <span class="math inline">\(\mathbb{E}(g_2) = 2\sum_{i = 1}^M\beta_i f_{i}^{(2)}\)</span>, respectively, where <span class="math inline">\(f_{i}^{(1)}\)</span> and <span class="math inline">\(f_{i}^{(2)}\)</span> are the allele frequencies in populations 1 and 2, respectively. Note, that I’m assuming that the causal effect size is the same across populations. The expected difference in genetic values between the two populations is then <span class="math inline">\(2\sum_{i=1}^M\beta_if_{i}^{(1)} - 2\sum_{i = 1}^M\beta_if_{i}^{(2)} = 2\sum_{i = 1}^M\beta_i(f_{i}^{(1)} - f_{i}^{(2)})\)</span>. In this expression, <span class="math inline">\(\beta_{i}\)</span>s are fixed and <span class="math inline">\(f_{i}^{(1)} - f_{i}^{(2)}\)</span> are random (over the evolutionary process), which means that to understand the expected mean difference in genetic value between populations, we need to work out the expected difference in allele frequency.</p>
+</div>
+<div id="expected-difference-in-allele-frequency-between-populations" class="section level2">
+<h2>Expected difference in allele frequency between populations</h2>
+<p>For two (randomly mating) populations that have diverged from a common ancestral population <a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>, the frequency of a neutral allele in the <span class="math inline">\(j^{th}\)</span> population at the <span class="math inline">\(i^{th}\)</span> locus approximately follows a normal distribution:</p>
+<p><span class="math display">\[f_{i}^{(j)} \sim \mathcal{N}(f_i ~, ~ f_i(1-f_i)F)\]</span>
+Where <span class="math inline">\(f_i\)</span> is the frequency in the ancestral population and <span class="math inline">\(F\)</span> is a measure of drift since the populations split. <span class="math inline">\(F \approx \frac{t}{2N_e}\)</span> where <span class="math inline">\(t\)</span> is the number of generations since the split and <span class="math inline">\(N_e\)</span> is the (diploid) effective population size. You can also think of <span class="math inline">\(F\)</span> as the <span class="math inline">\(F_{st}\)</span> between the two populations (more on this some other time). The derivation for this is complicated and not super important for this post but I’ll demonstrate that it holds with simulations.</p>
+<pre class="r"><code>library(dplyr)
+library(ggplot2)
+library(data.table)</code></pre>
+<p>Write a function to simulate drift in a population given some starting frequency, the effective population size, and the number of generations for which we want the simulation to run.</p>
+<pre class="r"><code>#write a binomial sampling function to simulate drift in a population
+let.it.drift &lt;-function(f0, g, Ne){
+  #f0 is  starting frequency in the ancestral population
+  #make sure g and Ne are integers
+  for(i in 1:g){
+    nalleles = rbinom(Ne, 2, f0) #sample Ne diploid individuals
+    f0 = mean(nalleles)/2 #calculate frequency in the population
+  }
+  return(f0) # return final frequency
+}</code></pre>
+<p>Now simulate the drift in the allele frequency at 1,000 independent loci, each starting with an ancestral frequency of 0.5. We’ll simulate a population of size 1,000 individuals and see how the frequency changes as we increase the divergence time between the two populations.</p>
+<pre class="r"><code>#simulate drift in 1000 loci for increasing number of generations of drift (5-50)
+p.exp = sapply(seq(5,50,10),
+               function(x){
+                 replicate(1000, let.it.drift( f0 = 0.5, g = x, Ne = 1000))})
+
+p.exp = data.table(p.exp)
+colnames(p.exp) = as.character(seq(5,50,10))
+p.exp$rep = c(1:1000)
+
+# melt to long format for plotting in panels
+mp.exp = reshape2::melt(p.exp, id.vars=&quot;rep&quot;, 
+              variable.name = &quot;generations&quot;,
+              value.name = &quot;frequency&quot;)
+
+#calculate the expected and observed mean and variance in allele frequency for each value of the number of generations
+mp.exp.summary = mp.exp %&gt;%
+  group_by(generations)%&gt;%
+  summarize(mean.f = mean(frequency),
+            var.f = var(frequency)) %&gt;%
+  mutate(g = as.numeric(as.character(generations)),
+         exp.var = 0.5*(1 - 0.5)*(g/2000))</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre class="r"><code>#plot!
+ggplot(mp.exp, aes(frequency))+
+  geom_histogram()+
+  facet_grid(generations~.)+
+  theme_classic()+
+  geom_vline(xintercept = 0.5, 
+             color = &quot;Red&quot;, 
+             linetype= &quot;dashed&quot;)+
+  geom_vline(data = mp.exp.summary, 
+             aes(xintercept = mean.f), 
+             color = &quot;blue&quot;,
+             linetype= &quot;dashed&quot;)+
+  geom_text(data = mp.exp.summary, 
+            aes(x = 0.65, y = 100, 
+                label = paste(&quot;obs. var&quot;, 
+                              round(var.f,4))),
+            color = &quot;blue&quot;)+
+  geom_text(data = mp.exp.summary, 
+            aes(x = 0.65, y = 200, 
+                label = paste(&quot;exp. var&quot;,
+                              round(exp.var,4))),
+            color = &quot;red&quot;)+
+  labs(x = &quot;Frequency&quot;,
+       y = &quot;Count&quot;)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="{{< relref "post/2021-03-14-genetic-difference-between-populations/index.en.html" >}}index.en_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>Notice a few things:</p>
+<ol style="list-style-type: decimal">
+<li><p>The observed mean (red line) and variance (red text) in allele frequency closely match those predicted from the model above, even for populations (of 1,000 individuals) that diverged 45 generations ago.</p></li>
+<li><p>Even though the allele frequency at any single locus can vary substantially from the ancestral frequency, the mean of the distribution (representing the expected allele frequency) does not change regardless of how many generations of drift we simulate.</p></li>
+<li><p>However, what does increase as a function of the number of generations is the <em>variance</em> (or spread) of the allele frequency distribution. In other words, even though we expect the allele frequency to remain the same (regardless of the number of generations), the possible values that the frequency can reach (in either direction) gets larger and larger with every generation.</p></li>
+</ol>
+<p>Because the expected frequency in both populations is the same, i.e., <span class="math inline">\(\mathbb{E}(f_i^{(1)}) = \mathbb{E}(f_i^{(2)}) = f_i\)</span>, the expected difference in allele frequency between the two populations <span class="math inline">\(\mathbb{E}(f_i^{(1)} - f_i^{(2)}) = \mathbb{E}(f_i^{(1)}) - \mathbb{E}(f_i^{(2)}) = 0\)</span>. And the expected mean difference in genetic value is <span class="math inline">\(\mathbb{E}(g_1 - g_2) = 2\sum_{i = 1}^M\beta_i\mathbb{E}(f_{i}^{(1)} - f_{i}^{(2)}) = 0\)</span>.</p>
+<p>In other words, we expect the genetic difference underlying a phenotype between populations to be zero. Does that mean that we don’t expect to see any differences between populations? No, because even though the expected difference in frequency is zero, the expected <em>absolute</em> difference is not zero. Let me illustrate this by simulating drift in two populations that have evolved independently since their divergence from a common ancestral population with allele frequency of 0.5.</p>
+<pre class="r"><code>#simulate drift in 1000 loci for increasing number of generations of drift (5-50)
+#pop 2 (we will use p.exp as pop1 frequencies)
+p.exp2 = sapply(seq(5,50,10),
+               function(x){
+                 replicate(1000, let.it.drift( f0 = 0.5, g = x, Ne = 1000))})
+
+p.exp2 = data.table(p.exp2)
+colnames(p.exp2) = as.character(seq(5,50,10))
+p.exp2$rep = c(1:1000)
+
+# melt to long format for plotting in panels
+mp.exp2 = reshape2::melt(p.exp2, id.vars = &quot;rep&quot;, 
+              variable.name = &quot;generations&quot;,
+              value.name = &quot;frequency&quot;)
+
+colnames(mp.exp)[3] = &quot;freq1&quot;
+colnames(mp.exp2)[3] = &quot;freq2&quot;
+
+mp.exp = merge(mp.exp, mp.exp2, by = c(&quot;rep&quot;,&quot;generations&quot;))
+
+#calculate the expected and observed mean and variance in allele frequency for each value of the number of generations
+mp.exp.summary = mp.exp %&gt;%
+  group_by(generations)%&gt;%
+  summarize(mean.abs.diff = mean(abs(freq1 - freq2)))</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre class="r"><code>#plot!
+ggplot(mp.exp, aes(abs(freq1 - freq2)))+
+  geom_histogram()+
+  facet_grid(generations~.)+
+  theme_classic()+
+  geom_vline(data = mp.exp.summary, 
+             aes(xintercept = mean.abs.diff), 
+             color = &quot;blue&quot;,
+             linetype= &quot;dashed&quot;)+
+  labs(x = bquote(&quot;Absolute difference in allele frequency : abs(&quot;~f^(1)~&quot;-&quot;~f^(2)~&quot;)&quot;),
+       y = &quot;Count&quot;)</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="{{< relref "post/2021-03-14-genetic-difference-between-populations/index.en.html" >}}index.en_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>The figure above shows that the expected absolute difference in allele frequency between the two populations is not zero. In fact, it increases as a function of divergence time (blue line in the plot above). In other words, the more diverged the populations, the more we can expect there to be allele frequency differences between them.</p>
+<p>It follows then that we also expect the <em>absolute</em> difference in genetic values between populations to also increase with divergence time.</p>
+<p>A simpler way to say this is that for two populations that diverged from some common ancestor, we <em>do</em> expect there to be genetic differences underlying a neutrally evolving trait. BUT, we don’t know which direction this difference will take. Putting it differently, we don’t know whether population 1 or 2 should have a higher mean genetic value for the trait. This is one thing that needs to be kept in mind when discussing phenotypic differences between populations.</p>
+<p>Can we not infer this from the direction of the phenotypic difference? Say if population 1 has a higher phenotypic value than populaion 2, can we say anything about the direction of underlying genetic difference? No. so far I’ve only discussed the variation in the genetic component (<span class="math inline">\(g\)</span> in our phenotype model). The direction of phenotypic difference is also driven by the environment, which could be different between the two populations. More on this some other time but in conclusion:</p>
+<ol style="list-style-type: decimal">
+<li><p>The expectation of the genetic difference underlying a trait between populations is zero.</p></li>
+<li><p>But this does not mean that there won’t be <em>any</em> genetic difference between populations. In fact, we expect this difference to increase with divergence time.</p></li>
+<li><p>However, we cannot predict (for a neutral trait) which direction the difference is going to take, i.e, we cannot say if population 1 or 2 will have a higher genetic value.</p></li>
+</ol>
+<p>I should point that these conclusions are only applicable to neutral traits. Under directional selection, we do expect systematic differences in mean genotypic value between populations. However, as mentioned earlier, this cannot be inferred directly from differences in phenotypic means between populations. And even differences in genetic means between populations may not be due to selection. More on this at some other undecided time in the future…</p>
+<div id="acknowledgements" class="section level4">
+<h4>Acknowledgements</h4>
+<p>Thanks to <a href="https://twitter.com/trang1618">Trang Le</a> for giving feedback on an earlier draft of this post.</p>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>You can take a look at my <a href="https://www.arslanzaidi.com/post/heritability2/">post</a> on narrow-sense heritability for intuition.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>This model works well for recently diverged populations where time is measured on the scale of the effective population size. Thus, the model can accommodate long divergence times (in actual number of generations) for large populations.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>

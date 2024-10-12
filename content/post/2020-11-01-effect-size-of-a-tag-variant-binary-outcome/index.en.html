@@ -1,0 +1,233 @@
+---
+title: Effect size of a tag variant
+author: ''
+date: '2020-11-01'
+draft: false
+slug: effect-size-of-a-tag-variant
+categories: [derivation]
+tags:
+  - effect size
+  - LD
+  - tag variant
+subtitle: ''
+summary: ''
+authors: [admin]
+lastmod: '2020-12-20T12:54:03-05:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+
+
+<div id="motivation" class="section level4">
+<h4>Motivation</h4>
+<p>Ever wondered why the effect size of a tag variant is <span class="math inline">\(r\beta_{causal}\)</span>? Here, <span class="math inline">\(r\)</span> is the correlation (measure of LD) between the tag and causal variant, and <span class="math inline">\(\beta_{causal}\)</span> is the effect size of the causal variant. This makes intuitive sense qualitatively because we expect tag SNPs that are further away from causal variants to have smaller effect sizes (and vice versa). But I didn’t know where this exact relationship came from so I decided to work it out <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>. Posting the derivation here in detail and with explicit probability statements in case others find it helpful.</p>
+<p>Side warning: I would not recommend reading this on a smaller screen (e.g. phone) as the math might not render fully.</p>
+</div>
+<div id="modeling-the-effect-of-causal-variant-binary-phenotype" class="section level4">
+<h4>Modeling the effect of causal variant (binary phenotype)</h4>
+<p>Suppose there’s a biallelic disease locus with alleles A and a, where A is the risk allele. Further suppose that each individual in the population is haploid and that their genotype at the causal locus is denoted by <span class="math inline">\(A\)</span> which is 1 if they carry the risk allele and 0 otherwise. Haploidy makes the derivation easier to follow but the result can easily be extended to dploid genotypes as well.</p>
+<p>So, if we use <span class="math inline">\(Y \in \{0,1\}\)</span> to indicate disease status, where 0 indicates being healthy and 1 indicates having the disease, we can express the risk of each allele in terms as:</p>
+<p><span class="math display">\[\begin{aligned}
+P(Y = 1|A = 0) = \alpha_0,~~ and ~~P(Y = 1|A = 1) = \alpha_1
+\end{aligned}\]</span></p>
+<p>One way to model the effect size of the disease locus is with a log risk regression model:</p>
+<p><span class="math display">\[\pi =\mu_A + \beta_{causal} A\]</span></p>
+<p>where the left hand side is the probability of developing the disease, <span class="math inline">\(\mu_A\)</span> is the baseline prevalence (or the probability of disease in individuals not carrying the risk allele), and <span class="math inline">\(\beta_{causal}\)</span> represents the effect size.</p>
+<p>Note, for disease risk, we typically use a log risk regression model (i.e. where the response is modeled as <span class="math inline">\(log \left( \pi \right)\)</span>) or a logistic regression model (i.e. where the response is modeled as log odds or <span class="math inline">\(log \left( \frac{\pi}{1 - \pi} \right)\)</span>). I’m sticking to <span class="math inline">\(\pi\)</span> here because the result we’re after is easier to derive though the conclusions are similar for the other two models.</p>
+<p>Because <span class="math inline">\(\alpha_0 = \mu_A\)</span> and <span class="math inline">\(\alpha_1 = \mu_A + \beta_{causal}\)</span>, the effect size <span class="math inline">\(\beta_{causal}\)</span> can be obtained by subtraction:</p>
+<p><span class="math display">\[\begin{aligned}
+&amp; P(Y = 1|A = 1) - P(Y = 1|A = 0) \\
+&amp; = \alpha_1 - \alpha_0 \\
+&amp; =  \mu_A + \beta_{causal} - \mu_A \\
+&amp; = \beta_{causal}
+\end{aligned}\]</span></p>
+<p>Our goal is to answer the question: How does the effect size of a tag SNP vary as a function of the LD with the causal variant?</p>
+</div>
+<div id="modeling-the-effect-of-the-tag-snp-binary-phenotype" class="section level4">
+<h4>Modeling the effect of the tag SNP (binary phenotype)</h4>
+<p>Let’s assume that the tag SNP (with alleles B and b) itself has no intrinsic effect on disease risk. Thus, the risk of individuals carrying the B allele depends on how often it co-occurs with the risk allele at the causal locus (i.e. its correlation with alleles at the causal locus). So, to derive the marginal effect size at the tag SNP, we need to average over the allele at the causal variant. To do this, let’s first define the genotype at the tag locus as <span class="math inline">\(B\)</span>, which is 1 if individuals carry the B allele and 0 if they carry the b allele. The risk of carrying these alleles can be expressed as:</p>
+<p><span class="math display">\[\begin{aligned}
+P(Y = 1|B = 0) = \gamma_0,~~ and ~~P(Y = 1|B = 1) = \gamma_1
+\end{aligned}\]</span></p>
+<p>Then, the effect size at the tag SNP (<span class="math inline">\(\beta_{tag}\)</span>) is <span class="math inline">\(\gamma_1 - \gamma_0\)</span> similar to how we derived it for the causal locus.</p>
+<p>Let’s first work out the risk carried by the b allele:</p>
+<p><span class="math display">\[\begin{aligned}
+&amp; P(Y = 1|B = 0) = \frac{P(Y = 1,B = 0)}{P(B = 0)}
+\end{aligned}\]</span></p>
+<p>To calculate the numerator, we marginalize over the alleles at the causal variant.</p>
+<p><span class="math display">\[\begin{aligned}
+P(Y = 1, B = 0) = &amp; P(Y = 1, B = 0|A = 0)P(A = 0) +\\
+&amp; P(Y = 1, B = 0|A = 1)P(A = 1)
+\end{aligned}\]</span></p>
+<p><span class="math inline">\(B\)</span> and <span class="math inline">\(Y\)</span> are independent (conditional on <span class="math inline">\(A\)</span>). In other words, conditioning on the allele at the causal locus, your probability of developing the disease does not depend on which allele you carry at the tag SNP. For example, the disease risk of individuals carrying the risk (A) allele at the causal locus is <span class="math inline">\(\alpha_1\)</span>, regardless of whether they have the B or the b allele at the tag SNP. Therefore, <span class="math inline">\(P(Y = 1, B = 0|A = 0) = P(Y = 1|A = 0)P(B = 0|A = 0)\)</span>, and so</p>
+<p><span class="math display">\[\begin{aligned}
+P(Y = 1, B = 0) = &amp; P(Y = 1,B = 0|A = 0)P(A = 0) + \\
+&amp; P(Y = 1, B = 0|A = 1)P(A = 1) \\
+= &amp; P(Y = 1|A = 0)P(B = 0|A = 0)P(A = 0) + \\
+&amp; P(Y = 1|A = 1)P(B = 0|A = 1)P(A = 1) \\
+= &amp; \alpha_0 P(B = 0, A = 0) + \\
+  &amp; \alpha_1 P(B = 0, A = 1) \\
+= &amp; \alpha_0 f_{ab} + \alpha_1 f_{Ab}
+\end{aligned}\]</span></p>
+<p>where <span class="math inline">\(f_{ab}\)</span> and <span class="math inline">\(f_{Ab}\)</span> are haplotype frequencies. Then,</p>
+<p><span class="math display">\[\begin{aligned}
+P(Y = 1|B = 0) = \frac{P(Y = 1, B = 0)}{P(B = 0)} \\
+= \frac{\alpha_0 f_{ab} + \alpha_1 f_{Ab}}{1 - f_B}
+\end{aligned}\]</span></p>
+<p>We can do the same thing for <span class="math inline">\(P(Y = 1|B = 1)\)</span>:</p>
+<p><span class="math display">\[\begin{aligned}
+P(Y = 1, B = 1) = &amp; P(Y = 1,B = 1|A = 0)P(A = 0) + \\
+&amp; P(Y = 1, B = 1|A = 1)P(A = 1) \\
+= &amp; P(Y = 1|A = 0)P(B = 1|A = 0)P(A = 0) + \\
+&amp; P(Y = 1|A = 1)P(B = 1|A = 1)P(A = 1) \\
+= &amp; \alpha_0 P(B = 1, A = 0) + \\
+  &amp; \alpha_1 P(B = 1, A = 1) \\
+= &amp; \alpha_0 f_{aB} + \alpha_1 f_{AB}
+\end{aligned}\]</span></p>
+<p>and</p>
+<p><span class="math display">\[\begin{aligned}
+P(Y = 1|B = 1) = &amp; \frac{P(Y = 1, B = 1)}{P(B = 1)} \\
+= &amp; \frac{\alpha_0 f_{aB} + \alpha_1 f_{AB}}{f_B}
+\end{aligned}\]</span></p>
+<p>This is quite unsatisfying in that the haplotype frequencies are a bit arbitrary. We need to simplify them further. Let’s define:</p>
+<p><span class="math display">\[\begin{aligned}
+P(A = 1|B = 0) = q_0,~~ and ~~P(A = 1|B = 1) = q_1
+\end{aligned}\]</span></p>
+<p>We can express the haplotype frequencies in terms of these conditional probabilities.</p>
+<p><span class="math display">\[\begin{aligned}
+f_{AB} = &amp; P(A = 1,B = 1) \\
+= &amp; P(A = 1|B = 1)P(B = 1) \\
+= &amp; q_1 f_B \\
+\\
+f_{Ab} = &amp; P(A = 1,B = 0) \\
+= &amp; P(A = 1|B = 0)P(B = 0) \\
+= &amp; q_0 (1 - f_B) \\
+\\
+f_{ab} = &amp; P(A = 0,B = 0) \\
+= &amp; P(A = 0|B = 0)P(B = 0) \\
+= &amp; (1 - q_0)(1 - f_B) \\
+\\
+f_{aB} = &amp; P(A = 0,B = 1) \\
+= &amp; P(A = 0|B = 1)P(B = 1) \\
+= &amp; (1 - q_1)f_B \\
+\\
+\end{aligned}\]</span></p>
+<p>Plugging these into <span class="math inline">\(P(Y = 1| B = 0)\)</span> and <span class="math inline">\(P(Y = 1|B = 1)\)</span>:</p>
+<p><span class="math display">\[\begin{aligned}
+P(Y = 1|B = 0) = \gamma_0 \\
+= &amp; \frac{\alpha_0 f_{ab} + \alpha_1 f_{Ab}}{1 - f_B} \\
+= &amp; \frac{\alpha_0 (1 - q_0)(1 - f_B) + \alpha_1 q_0 (1 - f_B) }{1 - f_B} \\
+= &amp; \alpha_0 (1 - q_0) + \alpha_1 q_0 \\
+\\
+\\
+P(Y = 1|B = 1) = &amp; \gamma_1 \\
+= &amp; \frac{\alpha_0 f_{aB} + \alpha_1 f_{AB}}{f_B} \\
+= &amp; \frac{\alpha_0 (1 - q_1)f_B + \alpha_1 q_1f_B }{f_B} \\
+= &amp; \alpha_0 (1 - q_1) + \alpha_1 q_1 \\
+\end{aligned}\]</span></p>
+<p>The effect size of the tag SNP (<span class="math inline">\(\beta_{tag}\)</span>) is (similar to how we calculated the effect size of the causal variant):</p>
+<p><span class="math display">\[\begin{aligned}
+&amp; P(Y = 1|B = 1) - P(Y = 1|B = 0) \\
+= &amp; \gamma_1 -\gamma_0 \\
+= &amp; \{ \alpha_0 (1 - q_1) + \alpha_1 q_1 \} - \{ \alpha_0 (1 - q_0) + \alpha_1 q_1 \} \\
+= &amp; q_1(\alpha_1 - \alpha_0) - q_0(\alpha_1 - \alpha_0) \\
+= &amp; (q_1 - q_0)\beta_{causal}
+\end{aligned}\]</span></p>
+<p>It’s already starting to shape up! Can we express <span class="math inline">\(q_1\)</span> and <span class="math inline">\(q_0\)</span> in terms of the correlation between the two loci <span class="math inline">\(r\)</span>?</p>
+<p><span class="math display">\[r = \frac{ f_{AB} - f_A f_B }{\sqrt{f_A (1-f_A) f_B (1-f_B)}}\]</span>
+We know (from above) that <span class="math inline">\(f_{AB} = q_1 f_B\)</span>, so we can write the numerator of <span class="math inline">\(r\)</span> as <span class="math inline">\(f_{AB} - f_A f_B = q_1 f_B - f_A f_B\)</span>. We can further simplify this by writing <span class="math inline">\(f_A\)</span> in terms of <span class="math inline">\(f_B\)</span> by marginalization.</p>
+<p><span class="math display">\[\begin{aligned}
+f_A &amp; = P(A = 1) \\
+&amp; = P(A = 1,B = 1) + P(A = 1,B = 0) \\
+&amp; = q_1f_B + q_0(1 - f_B)
+\end{aligned}\]</span></p>
+<p>Then,</p>
+<p><span class="math display">\[\begin{aligned}
+f_{AB} - f_A f_B &amp; = q_1f_B - f_B \{q_1f_B + q_0(1 - f_B)\} \\
+&amp; = f_B(1 - f_B)(q_1 - q_0)
+\end{aligned}\]</span></p>
+<p>and <span class="math inline">\(r\)</span> becomes:</p>
+<p><span class="math display">\[\begin{aligned}
+r &amp; = \frac{f_B(1 - f_B)(q_1 - q_0)}{\sqrt{f_B(1-f_B)}\sqrt{f_A(1 - f_A)}} \\
+&amp; = (q_1 - q_0)\frac{\sqrt{f_B(1-f_B)}}{\sqrt{f_A(1 - f_A)}}
+\end{aligned}\]</span></p>
+<p>Therefore, <span class="math inline">\(q_1 - q_0\)</span> can be written as:</p>
+<p><span class="math display">\[q_1 - q_0 = r \frac{\sqrt{f_A(1-f_A)}}{\sqrt{f_B(1-f_B)}}\]</span></p>
+<p>Plugging this into <span class="math inline">\((q_1 - q_0) \beta_{causal}\)</span>, we get:</p>
+<p><span class="math display">\[\beta_{tag} = r\frac{\sqrt{f_A(1-f_A)}}{\sqrt{f_B(1-f_B)}}~\beta_{causal}\]</span></p>
+<p>In practice, genotypes are often normalized to unit variance, i.e., <span class="math inline">\(2f_B(1-f_B) = 2f_A(1-f_A) = 1\)</span>. If that’s the case, <span class="math inline">\(\beta_{tag}\)</span> further simplifies to:</p>
+<p><span class="math display">\[\beta_{tag} = r\beta_{causal}\]</span></p>
+<p>Done! Although, note that this last simplification assumes that genotypes for all SNPs are normalized to the same variance.</p>
+</div>
+<div id="effect-of-tag-snp-quantitative-phenotype" class="section level4">
+<h4>Effect of tag SNP (quantitative phenotype)</h4>
+<p>The derivation for quantitative phenotype is very similar and in some ways simpler because we can use a simple linear model instead of worrying about log models. The derivation for the quantitative phenotype is different mostly in notation. Instead of looking at the probability of disease as a function of which allele an individual carries, we’re going to look at the expected phenotype. We assume the following linear model:</p>
+<p><span class="math display">\[Y = \mu + \beta_{causal}A + \epsilon\]</span>
+where <span class="math inline">\(Y\)</span> is a continuous phenotype and <span class="math inline">\(\epsilon\)</span> is some random error. Then the expected phenotypes are:</p>
+<p><span class="math display">\[E(Y|A = 0) = \alpha_0 = \mu ~~~ \&amp; ~~~E(Y|A = 1) = \alpha_1 = \mu + \beta_{causal}\]</span></p>
+<p>And the effect of the causal variant is (similar to the binary phenotype):</p>
+<p><span class="math display">\[ \beta_{causal} = E(Y|A = 1) - E(Y|A = 0) \]</span></p>
+<p>Similary, if we denote <span class="math inline">\(E(Y|B = 0) = \gamma_0\)</span> and <span class="math inline">\(E(Y|B = 1) = \gamma_1\)</span> the effect size of the tag SNP is:</p>
+<p><span class="math display">\[ \beta_{tag} = E(Y|B = 1) - E(Y|B = 0)\]</span></p>
+<p><span class="math inline">\(E(Y|B = 0)\)</span> can be calculated using:</p>
+<p><span class="math display">\[E(Y|B = 0) = \int_{y} y. f_{Y|B = 0} (y|B = 0) dy\]</span>
+where <span class="math inline">\(f_{Y|B = 0}(y|B = 0)\)</span> is the probability distribution function (pdf) of <span class="math inline">\(y\)</span> conditional on the b allele. This is the same as calculating the mean of <span class="math inline">\(Y\)</span> across all individuals carrying the b allele. The pdf is necessary because <span class="math inline">\(Y\)</span> is a continuous variable.</p>
+<p><span class="math display">\[f_{Y|B = 0}(y|B = 0) = \frac{ f_{Y, B = 0}(y, B = 0) }{f_{B = 0}(B = 0)}\]</span>
+where <span class="math inline">\(f_{Y,B = 0}\)</span> is the joint distribution and <span class="math inline">\(f_{B = 0}(B = 0) = P(B = 0)\)</span>. This is similar to the definition of conditional probability presented in the case of the binary phenotype. Similar to calculating <span class="math inline">\(P(Y = 1,B = 0)\)</span> (e.g.) in the binary case, we will sum over the allele present at the causal locus (bear with me):</p>
+<p><span class="math display">\[\begin{aligned}
+f_{Y,B = 0}(y,B = 0) = &amp; \sum_{a} f_{Y,B = 0|A = a}P(A = a) \\
+= &amp; f_{Y,B = 0 | A = 0}(y,B = 0 | A = 0)P(A = 0) + \\
+&amp; f_{Y,B = 0 | A = 1}(y,B = 0 | A = 1)P(A = 1) \\
+= &amp; f_{Y|A = 0}(Y|A = 0)f_{B = 0|A = 0}(B = 0|A = 0)P(A = 0) + \\
+&amp; f_{Y|A = 1}(Y|A = 1)f_{B = 0|A = 1}(B = 0|A = 1)P(A = 1) \\
+= &amp; f_{Y|A = 0}(Y|A = 0)P(B = 0|A = 0)P(A = 0) +\\
+&amp; f_{Y|A = 1}(Y|A = 1)P(B = 0|A = 1)P(A = 1)
+\end{aligned}\]</span></p>
+<p>The second last line is possible again because <span class="math inline">\(Y\)</span> is independent of B, conditional on A. From this we can get the conditional distribution:</p>
+<p><span class="math display">\[\begin{aligned}
+f_{Y|B = 0}(y|B = 0) = &amp; f_{Y|A = 0}(Y|A = 0)P(B = 0|A = 0)P(A = 0) +\\
+&amp; \frac{f_{Y|A = 1}(Y|A = 1)P(B = 0|A = 1)P(A = 1)}{P(B = 0)}
+\end{aligned}\]</span>
+And <span class="math inline">\(E(Y|B = 0)\)</span> becomes:</p>
+<p><span class="math display">\[\begin{aligned}
+E(Y|B = 0) = &amp; \int_{y} yf_{Y|B = 0} (y|B = 0) dy \\
+= &amp; \int_{y} y .f_{Y|A = 0}(Y|A = 0)P(B = 0|A = 0)P(A = 0)dy ~~ +\\
+&amp; \frac{\int_{y} y .f_{Y|A = 1}(Y|A = 1)P(B = 0|A = 1)P(A = 1)dy}{P(B = 0)} \\
+= &amp; P(B = 0|A = 0)P(A = 0) \int_{y} y f_{Y|A = 0}(Y|A = 0)dy ~~ + \\
+&amp; \frac{P(B = 0|A = 1)P(A = 1) \int_{y} y f_{Y|A = 1}(Y|A = 1)dy}{P(B = 0)} \\
+= &amp; P(B = 0|A = 0)P(A = 0)E(Y|A = 0) + \\
+  &amp; \frac{P(B = 0|A = 1)P(A = 1)E(Y|A = 1)}{P(B = 0)}
+\end{aligned}\]</span></p>
+<p>We derived most of these terms in the binary case, which simplifies the above equation to:</p>
+<p><span class="math display">\[\begin{aligned}
+E(Y|B = 0) = &amp; \frac{\alpha_0 f_{ab} + \alpha_1 f_{Ab}}{f_B} \\
+= &amp; \alpha_0(1 - q_0) + \alpha_1 q_0
+\end{aligned}\]</span></p>
+<p>Similarly (and I’ll let you work this out yourself), <span class="math inline">\(E(Y|B = 1) = \alpha_0 (1 - q_1) + \alpha_1 q_1\)</span>. Then, the effect size of the tag SNP becomes:</p>
+<p><span class="math display">\[\begin{aligned}
+\beta_{tag} = &amp; E(Y|B = 1) - E(Y|B = 0) \\
+= &amp; \{ \alpha_0 (1 - q_1) + \alpha_1 q_1 \} - \{ \alpha_0(1 - q_0) + \alpha_1q_0 \} \\
+= &amp; (q_1 - q_0)\beta_{causal} \\
+= &amp; r\beta_{causal}\frac{\sqrt{f_A(1-f_A)}}{\sqrt{f_B(1-f_B)}}
+\end{aligned}\]</span></p>
+<p>I skipped over the last few steps as we already worked them out for the binary phenotype. So there you have it!</p>
+<p>This post has already gotten quite long so I’m going to leave it here but here are some extensions that you can try to work out:</p>
+<ul>
+<li>derivations for the log-risk and log-odds (logistic regression) model</li>
+<li>extend this result to diploid individuals</li>
+<li>derive the standard error and power of the test</li>
+</ul>
+<p>I might update this post later with some of these (1 and 2).</p>
+<p>Cheers! :)</p>
+</div>
+<div class="footnotes footnotes-end-of-document">
+<hr />
+<ol>
+<li id="fn1"><p>I found this paper which provides a similar result for the log risk model (<a href="https://onlinelibrary.wiley.com/doi/full/10.1002/gepi.20576">Vukcevic et al. 2012</a>). I have incorporated some of their notation in my post because it was clearer. Definitely worth the read.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>

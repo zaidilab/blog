@@ -1,0 +1,408 @@
+---
+title: "Gillespie - Chapter 1 (solutions)"
+authors: ["Nicole Kleman", "Parisa Riahi", "Sol Taylor-Brill"]
+date: "2024-07-18"
+output: html_document
+categories: Popgen - a concise course, solutions (Gillespie 2nd ed.)
+---
+
+
+
+<div id="problem-1.1---nicole" class="section level2">
+<h2>Problem 1.1 - Nicole</h2>
+<p>We can start by listing out all possible genotype combinations for each allele. Each number in the combination represents an allele:</p>
+<p>1 allele –&gt; 1 genotype (11)</p>
+<p>2 alleles –&gt; 3 genotypes (11 22 12)</p>
+<p>3 alleles –&gt; 6 genotypes (11 22 33 12 13 23)</p>
+<p>4 alleles –&gt; 10 genotypes (11 22 33 44 12 13 14 23 24 34)</p>
+<p>5 alleles –&gt; 15 genotypes (11 22 33 44 55 12 13 14 15 23 24 25 34 35 45)</p>
+<p>We can keep writing out possible combinations until we see a pattern arise.</p>
+<p>Then, we can see a pattern. We can split the genotypes into n homozygotes (ex: 11 22) and <span class="math inline">\(n \choose 2\)</span> heterozygotes (ex: 12), such that for n alleles we have, <span class="math inline">\(n + {n \choose 2}\)</span> possible genotypes, where we know <span class="math inline">\({n \choose 2} = \frac{n(n-1)}{2}\)</span>. So,
+<span class="math display">\[n + \frac{n(n-1)}{2} = \frac{2n + n(n-1)}{2} = \frac{2n + n^2 - n}{2} = \frac{n^2 + n}{2} = \frac{n(n+1)}{2}\]</span>.</p>
+<p>Then, for n alleles we have <span class="math inline">\(\frac{n(n+1)}{2}\)</span> genotypes.</p>
+</div>
+<div id="problem-1.2---sol" class="section level2">
+<h2>Problem 1.2 - Sol</h2>
+<p>Let us denote the probability of drawing an S allele given that the individual has genotype SS as p(S|SS), the probability of drawing S if an individual has SF genotype as p(S|SF), and the probability of drawing S if an individual is SI as p(S|SI). Thus, the frequency for one of the three alkaline phosphatase alleles can be described as follows:</p>
+<p>S = p(S|SS) + p(S|SF) + p(S|SI)</p>
+<p>A similar pattern can be repeated for the other 2 alleles. To calculate each of the frequencies we can just use the frequencies of each genotype from Table 1.2 (reproduced below):</p>
+<table>
+<thead>
+<tr class="header">
+<th align="center">Genotype</th>
+<th align="center">Number</th>
+<th align="center">Frequency</th>
+<th align="center">Expected</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">SS</td>
+<td align="center">141</td>
+<td align="center">0.4247</td>
+<td align="center">0.4096</td>
+</tr>
+<tr class="even">
+<td align="center">SF</td>
+<td align="center">111</td>
+<td align="center">0.3343</td>
+<td align="center">0.3507</td>
+</tr>
+<tr class="odd">
+<td align="center">FF</td>
+<td align="center">28</td>
+<td align="center">0.0843</td>
+<td align="center">0.0751</td>
+</tr>
+<tr class="even">
+<td align="center">SI</td>
+<td align="center">32</td>
+<td align="center">0.0964</td>
+<td align="center">0.1101</td>
+</tr>
+<tr class="odd">
+<td align="center">FI</td>
+<td align="center">15</td>
+<td align="center">0.0452</td>
+<td align="center">0.0471</td>
+</tr>
+<tr class="even">
+<td align="center">II</td>
+<td align="center">5</td>
+<td align="center">0.0151</td>
+<td align="center">0.0074</td>
+</tr>
+<tr class="odd">
+<td align="center">Total</td>
+<td align="center">332</td>
+<td align="center">1.000</td>
+<td align="center">1.000</td>
+</tr>
+</tbody>
+</table>
+<p>Based on Table 1.2 and the example written out above, the frequencies for each of the alleles is:<br />
+</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mathbb{P}(S) = &amp; \mathbb{P}(S|SS)\mathbb{P}(SS) + \mathbb{P}(S|SI)\mathbb{P}(SI) + \mathbb{P}(S|SF)\mathbb{P}(SF) \\
+= &amp; (1 \times 0.4247) + (1/2 \times 0.3343) + (1/2 \times 0.0964) \\
+= &amp; 0.6401
+\end{aligned}
+\]</span>
+Similarly,</p>
+<p><span class="math inline">\(\mathbb{F} = (1 \times 0.0843) + (1/2 \times 0.3343) + (1/2 \times 0.0452) = 0.2741\)</span>
+<span class="math inline">\(\mathbb{I} = (1 \times 0.0151) + (1/2 \times 0.0964) + (1/2 \times 0.0452) = 0.0859\)</span></p>
+<p>As a sanity check, you can see that the frequencies of the three alleles add up to 1 since they make up all of the alleles in the population.</p>
+</div>
+<div id="problem-1.3---nicole" class="section level2">
+<h2>Problem 1.3 - Nicole</h2>
+<p>We write out all mating pairs and the frequency of the offspring:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="center">Maternal Genotype</th>
+<th align="center">Paternal Genotype</th>
+<th align="center">A1A1</th>
+<th align="center">A1A2</th>
+<th align="center">A2A2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">A1A1</td>
+<td align="center">A1A1</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">A1A1</td>
+<td align="center">A1A2</td>
+<td align="center">1/2</td>
+<td align="center">1/2</td>
+<td align="center">0</td>
+</tr>
+<tr class="odd">
+<td align="center">A1A2</td>
+<td align="center">A1A1</td>
+<td align="center">1/2</td>
+<td align="center">1/2</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">A1A2</td>
+<td align="center">A1A2</td>
+<td align="center">1/4</td>
+<td align="center">1/2</td>
+<td align="center">1/4</td>
+</tr>
+<tr class="odd">
+<td align="center">A1A1</td>
+<td align="center">A2A2</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="center">A2A2</td>
+<td align="center">A1A1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">0</td>
+</tr>
+<tr class="odd">
+<td align="center">A1A2</td>
+<td align="center">A2A2</td>
+<td align="center">0</td>
+<td align="center">1/2</td>
+<td align="center">1/2</td>
+</tr>
+<tr class="even">
+<td align="center">A2A2</td>
+<td align="center">A1A2</td>
+<td align="center">0</td>
+<td align="center">1/2</td>
+<td align="center">1/2</td>
+</tr>
+<tr class="odd">
+<td align="center">A2A2</td>
+<td align="center">A2A2</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">1</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Table 1.3:</strong> Mating pairs between male and females and the frequencies of the genotypes.</p>
+<p>Now write out frequencies of genotypes as a function of x’s and y’s. Sum the frequencies for each genotype to get the second generation. We sum vertically for each frequency column:</p>
+<p>A1A1 = <span class="math inline">\(1*x_{11}y_{11} + \frac{1}{2}*x_{11}y_{12} + \frac{1}{2}*x_{12}y_{11} + \frac{1}{4}*x_{12}y_{12}\)</span></p>
+<p>A1A2 = <span class="math inline">\(\frac{1}{2}*x_{11}y_{12} + \frac{1}{2}*x_{12}y_{11} + \frac{1}{2}*x_{12}y_{12} + 1*x_{11}y_{22} + 1*x_{22}y_{11} + \frac{1}{2}*x_{12}y_{22} + \frac{1}{2}*x_{22}y_{12}\)</span></p>
+<p>A2A2 = <span class="math inline">\(\frac{1}{4}*x_{12}y_{12} + \frac{1}{2}*x_{12}y_{22} + \frac{1}{2}*x_{22}y_{12} + 1*x_{22}y_{22}\)</span></p>
+<p>Now that we have the second generation, we want to calculate the third generation. We use the offspring calculated here to compute the mating pairs and frequencies of the next generation, which are the same calculations in Table 1. Thus, our results remain the same as the second generation calculations for the third generation. Since the individuals are mating at random and we are only focusing on the autosomal alleles, we can derive the Hardy-Weinberg frequencies from our results.</p>
+<p>If we look at A1A1, we can calculate the probability that each parent gives an A1 allele. To do this we can first simplify our equation:</p>
+<p>A1A1 = <span class="math inline">\((x_{11} + \frac{1}{2}x_{12}) * (y_{11} + \frac{1}{2}y_{12})\)</span></p>
+<p>Then, the probability for one parent to give A1 is p, and the probability of the second parent is also p: <span class="math inline">\((x_{11} + \frac{1}{2}x_{12}) * (y_{11} + \frac{1}{2}y_{12})\)</span> = p*p</p>
+<p>Similarly, we can do this for both A1A2 and A2A2 genotypes:</p>
+<p>A1A2 = <span class="math inline">\((x_{11} + \frac{1}{2}x_{12})(\frac{1}{2}y_{12} + y_{22}) + (x_{22} + \frac{1}{2}x_{12})(\frac{1}{2}y_{12} + y_{11})\)</span> = pq + pq</p>
+<p>A2A2 = <span class="math inline">\((x_{22} + \frac{1}{2}x_{12}) * (y_{22} + \frac{1}{2}y_{12})\)</span> = q*q</p>
+<p>To simplify genotype frequencies we get:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="center">A1A1</th>
+<th align="center">A1A2</th>
+<th align="center">A2A2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"><span class="math inline">\(p^2\)</span></td>
+<td align="center"><span class="math inline">\(2pq\)</span></td>
+<td align="center"><span class="math inline">\(q^2\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Thus, we end up attaining the Hardy-Weinberg frequencies.</p>
+</div>
+<div id="problem-1.4---parisa" class="section level2">
+<h2>Problem 1.4 - Parisa</h2>
+<p><strong>Q. Graph the frequencies of homozygotes and heterozygotes as a function of allele frequency p. At what allele frequency is the frequency of the heterozygotes maximized?</strong></p>
+<pre class="r"><code># Define the sequence of allele frequencies (p) from 0 to 1
+p &lt;- seq(0, 1, length.out = 20)
+
+# Calculate the complementary allele frequency (q)
+q &lt;- 1 - p
+
+# Calculate the frequencies of the three genotypes
+homozygote_A1A1 &lt;- p^2
+homozygote_A2A2 &lt;- q^2
+heterozygote_A1A2 &lt;- 2 * p * q
+
+# Plot the frequencies of the homozygote A1A1 genotype
+plot(p, homozygote_A1A1, type = &quot;l&quot;, col = &quot;darkblue&quot;, ylim = c(0, 1),
+     ylab = &quot;Genotype Frequency&quot;, xlab = &quot;Allele Frequency (p)&quot;, lwd = 2,
+     main = &quot;Genotype Frequencies vs Allele Frequency&quot;)
+
+# Add lines for the frequencies of the other two genotypes
+lines(p, homozygote_A2A2, col = &quot;darkgreen&quot;, lwd = 2)
+lines(p, heterozygote_A1A2, col = &quot;darkred&quot;, lwd = 2)
+
+# Add a legend to the plot
+legend(&quot;topright&quot;, legend = c(&quot;Homozygote A1A1&quot;, &quot;Homozygote A2A2&quot;, &quot;Heterozygote A1A2&quot;),
+       col = c(&quot;darkblue&quot;, &quot;darkgreen&quot;, &quot;darkred&quot;), lwd = 2)</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/problem1.4-1.png" width="672" /></p>
+<p>let’s explore how genotype frequencies change with different allele frequencies (p).</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Allele Frequencies (p and q)</strong>: p represents the frequency of allele A1 and ranges from 0 to 1. q is the frequency of allele A2, calculated as 1 - p.</p></li>
+<li><p><strong>Genotype Frequencies</strong>: Using Hardy-Weinberg equilibrium, the frequencies of the genotypes are:</p></li>
+</ol>
+<ul>
+<li><p>Homozygote A1A1: p^2</p></li>
+<li><p>Homozygote A2A2: q^2</p></li>
+<li><p>Heterozygote A1A2: 2pq</p></li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li><strong>Plotting</strong>: The frequencies of these genotypes are plotted against the allele frequency p using different colors. A legend is added to identify the genotypes.</li>
+</ol>
+<p>From the plot, we can see how the frequencies of the genotypes change as the allele frequency p changes from 0 to 1. When p is low, the frequency of homozygote A2A2 is high, and as p increases, the frequency of homozygote A1A1 increases. The frequency of the heterozygote A1A2 genotype peaks at p = 0.5. This can be estimated using the derivation, as f(p)=2 * p *(1-p). The function reaches its maximum at 0.5 because if we do f’(p) = 0, then p=0.5.</p>
+</div>
+<div id="problem-1.5---parisa" class="section level2">
+<h2>Problem 1.5 - Parisa</h2>
+<p>Graph the ratio of the frequencies A1A2 heterozygotes to A2A2 homozygotes as a function of q using both the exact and approximate formulas.</p>
+<pre class="r"><code># Define the sequence of allele frequencies (q) from 0 to 0.5
+q &lt;- seq(0, 0.5, length.out = 20)
+
+# Calculate the exact ratio of heterozygote A1A2 to homozygote A2A2
+exact_ratio_A1A2_to_A2A2 &lt;- 2 * (1 - q) * q / q^2
+
+# Calculate the approximate ratio of heterozygote A1A2 to homozygote A2A2
+approx_ratio_A1A2_to_A2A2 &lt;- 2 / q
+
+# Plot the exact and approximate ratios
+plot(q, exact_ratio_A1A2_to_A2A2, type = &quot;l&quot;, col = &quot;purple&quot;, ylim = c(0, max(exact_ratio_A1A2_to_A2A2, na.rm = TRUE)),
+     xlim = c(0, 0.5), ylab = &quot;Ratio of A1A2 to A2A2&quot;, xlab = &quot;Allele Frequency (q)&quot;,
+     main = &quot;Exact vs Approximate Ratios of A1A2 to A2A2&quot;, lwd = 2)
+lines(q, approx_ratio_A1A2_to_A2A2, col = &quot;orange&quot;, lwd = 2, lty = 2)
+
+# Add a legend to the plot
+legend(&quot;topright&quot;, legend = c(&quot;Exact Ratio&quot;, &quot;Approximate Ratio&quot;),
+       col = c(&quot;purple&quot;, &quot;orange&quot;), lwd = 2, lty = c(1, 2))</code></pre>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/problem1.5-1.png" width="672" /></p>
+<p>let’s compare the exact and approximate ratios of heterozygote A1A2 to homozygote A2A2.</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>Allele Frequencies (q)</strong>:q represents the frequency of allele A2 and ranges from 0 to 0.5.</p></li>
+<li><p><strong>Exact Ratio Calculation</strong>: The exact ratio of heterozygote A1A2 to homozygote A2A2 is calculated using the formula (2(1-q)q) / q^2.</p></li>
+<li><p><strong>Approximate Ratio Calculation</strong>: The approximate ratio of heterozygote A1A2 to homozygote A2A2 is calculated using the formula 2 / q.</p></li>
+<li><p><strong>Plotting</strong>: Both the exact and approximate ratios are plotted against the allele frequency q using different colors and line types. A legend is added to identify the ratios.</p></li>
+</ol>
+<p>From the plot, we can observe that both the exact and approximate ratios of heterozygote A1A2 to homozygote A2A2 increase as the allele frequency q decreases.</p>
+<p>The approximate ratio (orange dashed line) is a good estimate of the exact ratio (purple solid line), especially for small values of q. As q approaches 0, the ratios diverge slightly, but the approximation remains fairly accurate.</p>
+<p>This demonstrates how a simple approximation can be used to estimate the ratio without significantly losing accuracy.</p>
+</div>
+<div id="problem-1.6---sol" class="section level2">
+<h2>Problem 1.6 - Sol</h2>
+<p>A copy of Table 1.2 from the text is available under problem 1.2 above. The <span class="math inline">\(\chi^2\)</span> test for the agreement of the data in Table 1.2 with Hardy-Weinberg law can be conducted manually using the <span class="math inline">\(\chi^2\)</span> formula: <span class="math display">\[\chi^2=\sum\frac{(O_i-E_i)^2}{E_i}\]</span>
+To calculate the <span class="math inline">\(\chi^2\)</span> value for each genotype we will first multiply the values in the Expected frequency column and the Frequency column from Table 1.2 by 332 (the total number of individuals). The expected frequencies is what we would expect to observe under Hardy-Weinberg law, whereas Frequency is what is actually observed. Then we will calculate the <span class="math inline">\(\chi^2\)</span> value for each genotype and add the values together to get the total <span class="math inline">\(\chi^2\)</span> value as follows:</p>
+<pre class="r"><code>#Data columns taken from Table 1.2:
+Genotypes&lt;-c(&quot;SS&quot;,&quot;SF&quot;,&quot;FF&quot;,&quot;SI&quot;,&quot;FI&quot;,&quot;II&quot;)
+Observed&lt;-c(141,111,28,32,15,5)
+ObservedFreq&lt;-c(0.4247, 0.3343, 0.0843, 0.0964, 0.0452, 0.0151)
+ExpectedFreq&lt;-c(0.4096, 0.3507, 0.0751, 0.1101, 0.0471, 0.0074)
+
+#Creating Table based off of Table 1.2 (just binding columns together into dataframe):
+Chi_Squared_Table&lt;- data.frame(Genotypes, Observed, ExpectedFreq)
+
+#Calculating Expected Counts (Expected Frequency * Total # individuals) and Observed Counts (based on observed frequency instead of actual counts for consistency) for each row:
+Chi_Squared_Table$ObservedCounts&lt;-ObservedFreq*332
+Chi_Squared_Table$ExpectedCounts&lt;-ExpectedFreq*332
+
+#Calculating the chi-squared value for each row based on the equation above
+Chi_Squared_Table$Chi_Squared&lt;-(Chi_Squared_Table$ObservedCounts-Chi_Squared_Table$ExpectedCounts)^2 / Chi_Squared_Table$ExpectedCounts
+print(Chi_Squared_Table)</code></pre>
+<pre><code>##   Genotypes Observed ExpectedFreq ObservedCounts ExpectedCounts Chi_Squared
+## 1        SS      141       0.4096       141.0004       135.9872  0.18481279
+## 2        SF      111       0.3507       110.9876       116.4324  0.25461853
+## 3        FF       28       0.0751        27.9876        24.9332  0.37417417
+## 4        SI       32       0.1101        32.0048        36.5532  0.56596803
+## 5        FI       15       0.0471        15.0064        15.6372  0.02544628
+## 6        II        5       0.0074         5.0132         2.4568  2.66003784</code></pre>
+<pre class="r"><code>#Adding together the Chi-squared values to get the sum:
+Chi_Squared_Sum&lt;-sum(Chi_Squared_Table$Chi_Squared)
+Chi_Squared_Sum</code></pre>
+<pre><code>## [1] 4.065058</code></pre>
+<p>Once we have calculated the <span class="math inline">\(\chi^2\)</span> above (4.065) we can use a chi-square table or the following code to calculate the p-value:</p>
+<pre class="r"><code>#The following code subtracts the area under the curve corresponding to the chi-squared value from 1 to get the p value:
+pvalue=1-pchisq(Chi_Squared_Sum, 3) # df=3
+pvalue</code></pre>
+<pre><code>## [1] 0.2545242</code></pre>
+<p>The reason that we are using three degrees of freedom instead of 5 (n-1) because the genotypes are not independent; we’ve already used information about the allele frequencies to calculate the expected genotype frequencies and the frequencies of alleles are constrained because they must add up to 1. Generally speaking, the degrees of freedom in a Hardy-Weinberg test = #genotypes - #alleles.</p>
+<p>Based on the p-value (0.255) there is insufficient evidence that the observed frequencies differ significantly from those predicted by Hardy-Weinberg law.</p>
+</div>
+<div id="problem-1.7---sol" class="section level2">
+<h2>Problem 1.7 - Sol</h2>
+<p>Each generation, females will receive one X chromosome from both parents, whereas males will only receive one X chromosome from their mothers. Therefore each generation the males will have the same allele frequency for X-linked alleles as the females in the previous generation, but females will have an allele frequency that is the average from males and females in the previous generation. Therefore with starting allele frequencies of <span class="math inline">\(p_f\)</span> in females and <span class="math inline">\(p_m\)</span> in males, 3 generations of allele frequencies would be as follows:</p>
+<table>
+<colgroup>
+<col width="34%" />
+<col width="27%" />
+<col width="37%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Generation</th>
+<th align="center">Female Freq</th>
+<th align="center">Male Freq.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center"><span class="math inline">\(p_f\)</span></td>
+<td align="center"><span class="math inline">\(p_m\)</span></td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center"><span class="math inline">\(\begin{array}{@{}c@{}} \dfrac{p_f - p_m}{2} \end{array}\)</span></td>
+<td align="center"><span class="math inline">\(p_f\)</span></td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center"><span class="math inline">\(\begin{array}{@{}c@{}} (\dfrac{p_f - p_m}{2}) + \dfrac{p_f}{2} \end{array}\)</span></td>
+<td align="center"><span class="math inline">\(\begin{array}{@{}c@{}} \dfrac{p_f - p_m}{2} \end{array}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>If we start with a population in which all females are <span class="math inline">\(A_1A_1\)</span> and all males are <span class="math inline">\(A_2\)</span> (ie females have an <span class="math inline">\(A_1\)</span> allele frequency of 1 and males have a frequency of 0), we can calculate the allele frequencies for subsequent generations based on the pattern we have shown above:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="center">Generation</th>
+<th align="center">F. Freq</th>
+<th align="center">M. Freq</th>
+<th align="center">F-M Freq.</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">1</td>
+</tr>
+<tr class="even">
+<td align="center">2</td>
+<td align="center">1/2</td>
+<td align="center">1</td>
+<td align="center">-1/2</td>
+</tr>
+<tr class="odd">
+<td align="center">3</td>
+<td align="center">3/4</td>
+<td align="center">1/2</td>
+<td align="center">1/4</td>
+</tr>
+<tr class="even">
+<td align="center">4</td>
+<td align="center">5/8</td>
+<td align="center">3/4</td>
+<td align="center">-1/8</td>
+</tr>
+<tr class="odd">
+<td align="center">5</td>
+<td align="center">11/16</td>
+<td align="center">5/8</td>
+<td align="center">1/16</td>
+</tr>
+<tr class="even">
+<td align="center">6</td>
+<td align="center">21/32</td>
+<td align="center">11/16</td>
+<td align="center">-1/32</td>
+</tr>
+</tbody>
+</table>
+<p>As mentioned above, you can see in the table that each generation males have the same <span class="math inline">\(A_1\)</span> frequency as females in the generation prior and females have the averaged <span class="math inline">\(A_1\)</span> frequency of males and females in the generation prior. Due to this, each generation the difference in <span class="math inline">\(A_1\)</span> frequency between males and females is halved. I have graphed 8 generations below:</p>
+<p><img src="{{< blogdown/postref >}}index_files/figure-html/problem1.7-1.png" width="672" /></p>
+<p>As can be seen in the figure, eventually both males and females approach the same value which is approximately 0.66 or 2/3. This makes sense because females have 2/3 of the X chromosomes in the population (XX) whereas males only have 1/3 of the X chromosomes (XY). Therefore since in the beginning all of females were <span class="math inline">\(A_1A_1\)</span> 2/3 of the X chromosomes in the entire population were <span class="math inline">\(A_1\)</span> and only 1/3 were <span class="math inline">\(A_2\)</span> since all males started off as <span class="math inline">\(A_2\)</span>. Therefore as time goes on, both males and females approach the starting frequency of <span class="math inline">\(A_1\)</span> in the entire population (2/3). If we instead graphed the frequency of <span class="math inline">\(A_2\)</span> in the population, both males and females would converge on an <span class="math inline">\(A_2\)</span> frequency of 1/3, since originally 1/3 of the alleles at this locus in the population were <span class="math inline">\(A_2\)</span> (since in Gen 1 all males were <span class="math inline">\(A_2\)</span>)</p>
+<p>```</p>
+</div>

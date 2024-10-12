@@ -1,0 +1,59 @@
+---
+title: What your genetic ancestry test can and cannot tell you about your genealogical
+  ancestors
+author: Arslan Zaidi
+draft: false
+date: '2018-10-17'
+slug: what-your-genetic-ancestry-test-can-and-cannot-tell-you-about-your-genealogical-ancestors
+categories:
+  - main
+tags:
+  - ancestry
+  - ancestry test
+  - genealogy
+  - genetics
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2020-11-19T10:21:35-05:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+
+The topic of this post was not on my radar 📡 but I don't live under a rock and I've been following the recent developments with Elizabeth Warren and her [much publicized](https://www.nytimes.com/2018/10/15/science/elizabeth-warren-native-american.html) ancestry results. Political drama aside, there are concerns over what such results mean (and don't mean) for one's identity and genealogical history. While many geneticists and anthropologists have weighed in on the matter, their discussions are not very accessible for people who are not statistical geneticists. So I figured I would take a crack at explaining it in simpler terms.
+
+Quick run down: Ms. Warren is somewhat Native American. The analysis was conducted by a well-known geneticist who knows his sh*t. While I cannot find the % of Native American ancestry in his [report](https://mk0elizabethwarh5ore.kinstacdn.com/wp-content/uploads/2018/10/Bustamante_Report_2018.pdf), one can wager a very rough guess of 0.1% - 1.6% based on the simple fact that the number of ancestors doubles in every previous generation: you have two parents, four grandparents, eight great grandparents, 16 great great grandparents and so on. Based on a more sophisticated algorithm, it is estimated that Elizabeth Warren had an ancestor who was 100% Native American 6-10 generations ago. Ten generations ago, you, she, and I had 2^10^ (1,024) ancestors! Some of these passed on their genetic material to you and some did not (in fact many did not).
+
+Some questions surrounding Warren's ancestry results are: Does her ancestry make her Native American? What if her ancestry results had shown that she didn't have any Native American ancestry?
+
+I want to try to answer these questions by illustrating how chromosomal segments are inherited over a small number of generations forward in time. Take a look at Fig. 1 which shows a pedigree on the left (the genealogical history of a family). On the right I'm showing a *single* possibility of how chromosomal segments in this family might be inherited.
+
+
+![Fig. 1: Difference between genealogical ancestry and genetic ancestry. A family tree (the genealogical ancestry) is shown on the left where the squares represent males and circles represent females. To the right is one possible way in which chromosomes can be inherited by family members. The numbers with % signs refer to the % of blue ancestry in each child.](https://genewiz.files.wordpress.com/2018/10/ancestry_decay-016.jpg)
+
+
+In the first generation, two people of different ancestries (blue and yellow) get together and have two kids, Child 1 and Child 2. Each parent gets to pass only 50% of their genetic material (only counting autosomes for simplicity) to their offspring. At every independent location on a chromosome (shown as segments), only one of two alleles can be passed on by each parent (two because chromosomes come in pairs). Which allele gets passed on is determined by a random process (**independent assortment**). In Fig. 1, the blue mother can only pass blue alleles to her kids and the yellow father can only pass yellow alleles to his kids. As a result, both children in the 2nd generation will carry exactly 50% of the "blue" ancestry. So far so good?
+
+Now Child 1 goes off and has two kids (Child 3 and Child 4) with another person of yellow ancestry. Child 1 can pass either a blue allele or a yellow allele (picked at random) at each segment to her children because she has both blue and yellow chromosomes. Because the "choice" of alleles in each segment is random, Child 3 inherits her mother's yellow allele in the 1st segment, blue allele in the 2nd segment, blue again in the 3rd segment, yellow in the 4th, and blue in the 5th. Child 3 cannot inherit blue alleles from her dad, who is 100% yellow, giving her a total of 30% blue ancestry. Meanwhile, Child 4 happens to receive a slightly different configuration from her mother (blue, yellow, blue, yellow, yellow), adding up to a total of 20% blue ancestry. Even though we *expect* Child 3 and Child 4 to inherit 25% blue ancestry (it gets diluted by 1/2 in every generation - see Fig. 2), it doesn't mean that's *going* to happen. Because which allele the mother picks to give to her children is random, Child 3 and Child 4 can carry different % of blue ancestry. This difference between the *expectation* and what we *actually observe* can increase with every subsequent generation. For example, Child 5 and Child 6 have 20% and 0% blue ancestry in their genome, respectively, even though we *expect* both of them to have 12.5% blue ancestry.
+
+![Fig. 2: The % of blue ancestry is expected to decrease every generation by 1/2 (red line and numbers on top of the red line). However, this is only the expectation. In other words, if you had many many families at every generation from the same pedigree, you would see that the blue ancestry would decrease, on average, by 1/2 in every generation. However, this % can be very different between two siblings as shown in Fig. 1. The dotted lines show the range of % blue ancestry that different siblings in each generation can have. It's also clear that the blue ancestry can be lost in some siblings (lower dotted line touches the 0% mark). The code for simulation and plot is available  [here](https://github.com/Arslan-Zaidi/Blog_files).](https://genewiz.files.wordpress.com/2018/10/expected_v_observed_decay-013.jpg)
+
+What is even more interesting is that eventually you could have someone without *any* blue ancestry at all (Child 6). This raises an important question: Does Child 6 have a blue ancestor? The answer is: yes!
+
+So, if someone has Native American ancestry, they necessarily would have had to have an ancestor who, at some point in the past, was 100% Native American. However, just because someone does not have any Native American ancestry does not mean that they did not have a Native American ancestor (triple negative was unavoidable 🤕).
+
+What does this mean for Elizabeth Warren? Did she have a Native American ancestor in the past? Yes, but that's not saying a lot. There are many people in the world walking around without any Native American ancestry even though they had Native American ancestors at some point in the past, as the example in Fig. 1 illustrates. Does that make them Native American? Is she Native American? This is not a question genetics can answer as a person's identity depends on their culture, geography, customs, and family history. Forcing genetics to answer such questions presents more questions than answers: How much Native American ancestry do you have to have to be called Native American? How far back would you have had to have a Native American ancestor? Answers to these questions will be driven by inherent biases that are influenced by our political and social inclinations. But they are certainly not scientific answers.
+
+Further reading: If you want a more detailed understanding of the difference between genetic and genealogical ancestry, be sure to check out Graham Coop's [blog post](https://gcbias.org/2017/12/19/1628/)
+
+------ UPDATE 10/18/2018: -------
+
+Technical clarification on Fig. 2: The red line (mean) and dashed lines (range = max - min) are based on a simulation of 1,000 independent loci and 1,000 predigrees. The simulations are meant to illustrate the concept that the observed % ancestry can deviate greatly from expectation. In reality, there are many more loci in the human genome, and the patterns of inheritance are much more complex because of linkage and recombination. Because of these reasons, it is unlikely that the ancestry is going to be lost in two generations as Fig. 2 currently shows [^1].
+
+
+[^1]: This clarification was prompted by someone in the comments section on the previous website. 

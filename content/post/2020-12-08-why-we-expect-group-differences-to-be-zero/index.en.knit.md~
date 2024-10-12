@@ -1,0 +1,87 @@
+---
+title: Why we expect "group differences" to be zero
+author: admin
+date: '2020-12-08'
+draft: true
+slug: why-we-expect-group-differences-to-be-zero
+categories: [main]
+tags:
+  - drift
+  - genetic drift
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2020-12-08T23:50:29-05:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+output: blogdown::html
+comments: True
+---
+
+
+``` r
+library(dplyr)
+library(ggplot2)
+library(data.table)
+
+F = rprojroot::is_rstudio_project$make_fix_file()
+```
+
+
+The expected genetic value in populations 1 and 2 are $2\beta f_1$ and $2\beta f_2$ and therefore, the expected difference in the genetic value between the two populations is $2\beta(f_1 - f_0)$. We can extend this to multiple loci underlying the trait: $2 \sum_s \beta_{s} (f_{s,1} - f_{s,2})$. So, really the question of whether we expect there to be a difference in genetic value between the two populations is a question of whether we expect there to be a difference in frequency at the causal variants.
+
+Let's assume that the populations diverged from the same ancestral population where the frequency of the variant was $\bar{f}_s$. So the question is what is expected value of $f_1 - f_2$? This has been worked out but the expected value of $f_1 - f_2 = 0$ because the expected value of both $f_1$ $f_2$ is $\bar{f}$. Therefore, the expected difference in genetic value is equal to $$
+
+
+$$\begin{aligned}
+P(Y = 1|A = 0) = \alpha_0,~~ and ~~P(Y = 1|A = 1) = \alpha_1
+\end{aligned}$$
+
+
+
+
+
+``` r
+ancestral.pop = rep(0.5,1e3)
+
+#function to let each locus drift for t generations and ne effective population size
+let.it.drift = function(t, ne, trace = FALSE){
+  f0 = ancestral.pop
+  
+  if(trace == FALSE){
+    for(i in 1:t){
+      f0 = sapply(f0, function(x){
+        fx = mean(rbinom(ne, 1, x))
+        return(fx)
+      })
+    }
+    return(f0)
+    }else{ #
+    fmat = matrix(NA, nrow = t, ncol = length(f0))
+    for(i in 1:t){
+      f0 = sapply(f0, function(x){
+        fx = mean(rbinom(ne, 1, x))
+        return(fx)
+      })
+      fmat[i,] = f0
+    }
+    fmat = reshape2::melt(fmat)
+    colnames(fmat) = c("g","locus","frequency")
+    return(fmat)
+  }
+}
+```
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,124 @@
+---
+title: Why does admixture create LD between unlinked loci?
+author: ''
+date: '2021-10-09'
+slug: why-does-admixture-create-ld-between-unlinked-loci
+categories:
+  - derivation
+tags:
+  - LD
+  - population structure
+  - admixture
+  - wahlund
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2021-10-09T11:36:37-04:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+<link href="{{< relref "post/2021-10-09-ld-between-loci-due-to-population-structure-admixture-2-locus-wahlund-effect/index.en.html" >}}index.en_files/anchor-sections/anchor-sections.css" rel="stylesheet" />
+<script src="{{< relref "post/2021-10-09-ld-between-loci-due-to-population-structure-admixture-2-locus-wahlund-effect/index.en.html" >}}index.en_files/anchor-sections/anchor-sections.js"></script>
+
+
+<p>Admixture generates linkage disequilibrium between loci, even those that are unlinked (i.e. segregate independently or reside on different chromosomes). A lot of my PhD was spent thinking about admixture and admixture LD gave me some grief. Recently I went back to some old notes on the topic to try and explain this to my students and I figured I’d share them in case others find them helpful.</p>
+<div id="the-intuition-behind-admixture-ld" class="section level3">
+<h3>The intuition behind admixture LD</h3>
+<p>For an intuitive explanation, I actually quite like the illustration in Human Evolutionary Genetics <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a>. Let’s consider a simple model of admixture between two populations (red and blue), which have been reproductively isolated (Fig. 1). In the first generation, all individuals will have one blue and one red chromosome. Now let’s say you sampled a single chromosome and determined it’s ancestry (red or blue). Because chromosomes can either be entirely red or entirely blue, you will immediately know the ancestry of all loci across the genome with absoulte certainty, even for loci on different chromosomes (Fig. 1). In other words, the ancestry across loci are complettely correlated in the admixed population. This correlation in known as admixture LD.</p>
+<p><img src="/media/posts/admixture_ld.png" style="width:50.0%" alt="Figure adapted from Zaidi and Mathieson eLife 2020" />
+<em>Fig. 1: Admixture generates LD between loci. Figure from <a href="https://www.routledge.com/Human-Evolutionary-Genetics/Jobling-Hollox-Kivisild-Tyler-Smith/p/book/9780815341482">Human Evolutionary Genetics (2nd Ed)</a>.</em></p>
+<p>Problem is, we can’t know the ancestry at a locus. Chromosomes are not painted red or blue (or which population they come from). What we <em>can</em> find out are the genotypes (by genotyping/sequencing). Does admixture induce correlations between genotypes at unlinked loci? Yes, but this correlation depends on a number of things and to develop a more nuanced (and quantitative) understanding, we need to do some math.</p>
+</div>
+<div id="factors-affecting-admixture-ld" class="section level3">
+<h3>Factors affecting admixture LD</h3>
+<p>Let there be two (randomly mating) populations that have been reproductively isolated for enough time for there to be systematic frequency differences between them. Denote <span class="math inline">\(X_1^A\)</span> and <span class="math inline">\(X_2^A\)</span> as the genotypes at locus A for an individual sampled randomly from population 1 and 2, respectively, such that <span class="math inline">\(\mathbb{E}(X_1^A) = f_1^A\)</span> and <span class="math inline">\(\mathbb{E}(X_2^A) = f_2^A\)</span> where <span class="math inline">\(f_1^A\)</span> and <span class="math inline">\(f_2^A\)</span> are the frequencies of the <span class="math inline">\(A\)</span> allele in population 1 and 2, respectively. Similarly, denote the genotype and frequency of another (unlinked) locus <span class="math inline">\(B\)</span> on a different chromosome as <span class="math inline">\(X_1^B\)</span> and <span class="math inline">\(f_1^B\)</span>, respectively.</p>
+<p>Statistically speaking, LD is a measure of the covariance in genotypes between two loci. For population 1, the covariance, <span class="math inline">\(D = cov(X_1^A, X_1^B) = \mathbb{E}(X_1^{AB}) - \mathbb{E}(X_1^A)\mathbb{E}(X_1^B)\)</span> <a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>. Here, <span class="math inline">\(\mathbb{E}(X_1^{AB})\)</span> is the expectation of observing alleles <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> together, which is equal to the frequency of the <span class="math inline">\(AB\)</span> haplotype denoted by <span class="math inline">\(f_1^{AB}\)</span>. In a randomly mating population, the frequency of the haplotype is equal to the product of the frequency of the individual loci, <span class="math inline">\(f_1^{AB} = f_1^A f_1^B\)</span> and <span class="math inline">\(D = f_1^{AB} - f_1^Af_1^B = 0\)</span>.</p>
+<p>Now, imagine that there is an admixture event where individuals from populations 1 and 2 are put together in a single population in proportions of <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(1-\alpha\)</span>, respectively. In this meta-population, the expected frequencies of the <span class="math inline">\(A\)</span> and <span class="math inline">\(B\)</span> alleles are <span class="math inline">\(\alpha f_1^A + (1-\alpha)f_2^A\)</span> and <span class="math inline">\(\alpha f_1^B + (1-\alpha)f_2^B\)</span>, respectively <a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>. Similarly, the expected frequency of the <span class="math inline">\(f^{AB}\)</span> haplotype is <span class="math inline">\(\alpha f_1^{AB} + (1-\alpha)f_2^{AB}\)</span>. The LD between the two loci in the admixed population is therefore:</p>
+<p><span class="math display">\[\begin{aligned}
+D &amp; = f^{AB} - f^Af^B \\
+&amp; =  \{\alpha f_1^{AB} + (1-\alpha)f_2^{AB}\} - \{\alpha f_1^A + (1-\alpha)f_2^A\}\{\alpha f_1^B + (1-\alpha)f_2^B\}\\
+&amp; = \{\alpha f_1^{AB} + (1-\alpha)f_2^{AB}\} - \{\alpha^2 f_1^Af_1^B + \alpha(1-\alpha)f_1^Af_2^B + \alpha(1-\alpha)f_2^Af_1^B + (1-\alpha)^2 f_2^Af_2^B \} \\
+&amp; = \alpha f_1^Af_1^B + \alpha^2 f_1^Af_1^B + (1-\alpha)f_2^Af_2^B - (1-\alpha)^2f_2^Af_2^B - \alpha (1-\alpha)f_1^Af_2^B - \alpha (1-\alpha)f_2^Af_1^B  \\
+&amp; = \alpha(1-\alpha)f_1^Af_1^B - \alpha(1-\alpha)f_1^Af_2^B + \alpha(1-\alpha)f_2^Af_2^B - f_1^Af_2^B\alpha(1-\alpha) \\
+&amp; = \alpha(1 - \alpha)\{ f_1^Af_1^B - f_1^Af_2^B + f_2^Af_2^B - f_2^Af_1^B\} \\
+&amp; = \alpha(1-\alpha)\{ f_1^A(f_1^B - f_2^B) - f_2^A(f_1^B - f_2^B) \} \\
+&amp; = \alpha(1-\alpha)\{ (f_1^A - f_2^A)(f_1^B - f_2^B)\}
+\end{aligned}\]</span></p>
+<p>This shows that the admixture LD between the genotypes at two loci depends on two things: (i) the product of the allele frequency difference between the two populations <span class="math inline">\((f_1^A - f_2^A)(f_1^B - f_2^B)\)</span> <a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> and (ii) the admixture fraction <span class="math inline">\(\alpha\)</span>. Let’s get an intuitive understanding of the relationship between admixture LD and these two quantities with a plot.</p>
+<pre class="r"><code>#create matrix to store D
+dmat = matrix(NA, nrow = 11, ncol = 11)
+alpha = seq(0, 1, 0.1) # range of values of admixture fraction
+fdiff = seq(0, 1, 0.1) # range of values of frequency difference at locus A. assume difference at locus B is 1.
+
+for(i in 1:11){
+  for(j in 1:11){
+    dmat[i,j] = alpha[i]*(1 - alpha[i]) * 1 * fdiff[j]
+  }
+}
+
+image(dmat, main = &quot;Admixture LD&quot;, col = heat.colors(12), 
+      xlab = bquote(&quot;Admixture fraction&quot;~alpha), ylab = &quot;Frequency difference at locus B&quot;)</code></pre>
+<p><img src="{{< relref "post/2021-10-09-ld-between-loci-due-to-population-structure-admixture-2-locus-wahlund-effect/index.en.html" >}}index.en_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p>We can tell that there will be no LD between unlinked loci (i.e. <span class="math inline">\(D = 0\)</span> where tiles are red) in an unadmixed (randomly mating) population (i.e. when <span class="math inline">\(\alpha = 0\)</span> or <span class="math inline">\(\alpha = 1\)</span>). <span class="math inline">\(D = 0\)</span> also when the allele frequency at either of the two loci are equal between the two populations (i.e. <span class="math inline">\(f_1^A - f_2^A = 0\)</span> or <span class="math inline">\(f_1^B - f_2^B = 0\)</span>). For any other situation (<span class="math inline">\(\alpha &gt;0\)</span> &amp; <span class="math inline">\(|f_1^A - f_2^A| &gt; 0\)</span> &amp; <span class="math inline">\(|f_1^B - f_2^B| &gt; 0\)</span>), unlinked loci will be correlated across the genome (<span class="math inline">\(D &gt; 0\)</span> where tiles are more yellow). The requirement that <span class="math inline">\(|f_1^A - f_2^A|\)</span> and <span class="math inline">\(|f_1^A - f_2^A|\)</span> be greater than 0 means that admixture LD only affects loci where the frequencies are different between the two populations, the admixture LD increasing with the difference in frequency.</p>
+<p>Admixture LD is maximized (bright yellow region) when two conditions are met: (i) when <span class="math inline">\(\alpha = 0.5\)</span> (i.e. each population contributes to the admixture event equally), which would make <span class="math inline">\(\alpha(1-\alpha) = 0.25\)</span>, <em>and</em> (ii) when the product of allele frequency difference <span class="math inline">\((f_1^A - f_2^A)(f_1^B - f_2^B)\)</span> is 1. The latter is only possible if both <span class="math inline">\(f_1^A - f_2^A = f_1^B - f_2^B = 1\)</span>, i.e. if one allele is fixed in one population and absent in the other population.</p>
+</div>
+<div id="admixture-ld-decays-pretty-rapidly-with-random-mating" class="section level3">
+<h3>Admixture LD decays pretty rapidly with random mating</h3>
+<p>So far we’ve only considered LD right after admixture. Admixture LD between unlinked loci decays pretty rapidly after admixture in a randomly mating population due to recombination between loci and independent assortment (see Fig. 1 again). Let’s denote admixture LD in generation <span class="math inline">\(t\)</span> since admixture as <span class="math inline">\(D^t\)</span>. In a randomly mating population arising from a single admixture event, <span class="math inline">\(D^t = D^0 (1 - r)^t\)</span> <a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a> where <span class="math inline">\(D^0\)</span> is the admixture LD observed at the time of admixture and <span class="math inline">\(r\)</span> is the recombination fraction between the two loci. Let’s plot the decay of admixture LD as a function of the <span class="math inline">\(r\)</span> assuming the maximum possible value <span class="math inline">\(D^0\)</span> can take (i.e. 0.25).</p>
+<pre class="r"><code>suppressPackageStartupMessages(library(ggplot2))
+
+#range of values of r (recombination fraction)
+r = seq(0, 0.5, 0.1)
+dtmat = matrix(NA, nrow = 6, ncol = 10) # matrix to store values of dt
+
+#max possible value of D0 is when alpha = 0.5 and when freq diff is 1. 
+#this leads to a max value of 0.25 
+
+for(i in 1:6){
+  dt = 0.25
+  for(j in 1:10){
+    dtmat[i,j] = dt
+    dt = dt*(1 -r[i])^j
+  }
+}
+
+dtmat = reshape2::melt(dtmat)
+
+colnames(dtmat) = c(&quot;r&quot;,&quot;g&quot;,&quot;Dt&quot;)
+dtmat$r = (dtmat$r - 1)/10
+
+ggplot(dtmat, 
+       aes(g, Dt, group = r, 
+           color = as.factor(r)))+
+  geom_line()+
+  theme_classic()+
+  theme(axis.text = element_text(size = 14),
+        axis.title = element_text(size = 16),
+        legend.title = element_text(size = 14))+
+  scale_color_viridis_d()+
+  scale_x_continuous(breaks = c(1:10))+
+  labs(x = &quot;Generations since admixture (t)&quot;,
+       y = bquote(D[t]),
+       color = &quot;r&quot;)</code></pre>
+<p><img src="{{< relref "post/2021-10-09-ld-between-loci-due-to-population-structure-admixture-2-locus-wahlund-effect/index.en.html" >}}index.en_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>As you can see, <span class="math inline">\(D\)</span> decays very quickly between loci, but especially when the loci are not unlinked (i.e. <span class="math inline">\(r = 0.5\)</span>, yellow line), reaching almost neglegible values just after 4 generations of random mating. However, the rate of decay shown here is if the admixed population were mating randomly. Admixture LD will decay more slowly in a population with ancestry-based assortative mating (i.e. where individuals prefer to mate with others of similar ancestry) and/or if the admixture is continuous (i.e. with an continuous influx of individuals from one or both of the ancestral populations) as opposed to occurring in a single event. Why that happens is beyond the scope of this post but you should look up <a href="https://www.cell.com/ajhg/pdf/S0002-9297(07)62484-7.pdf">Pfaff <em>et al.</em> 2001</a> and <a href="https://pubmed.ncbi.nlm.nih.gov/27879348/">Zaitlen <em>et al.</em> 2017</a> for a deeper treatment (with nice and clear notation) of this topic.</p>
+<p>LD between unlinked loci can also be generated due to population structure or assortative mating in the population (non-random mating broadly). Thus, admixture LD is a special instance of a more general phenomenon whereby demographic processes (e.g. population structure and assortative mating) can induce correlations across the genome. The correlations between unlinked loci that arise due to population structure and admixture is sometimes called the multi-locus Wahlund effect. Sometimes people call this type of LD gametic phase disequilibrium (how’s that for a mouthful) to distinguish it from LD due to physical linkage.</p>
+<div id="footnotes" class="section level4">
+<h4>Footnotes</h4>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Fig. 14.13, page 461 of <a href="https://www.routledge.com/Human-Evolutionary-Genetics/Jobling-Hollox-Kivisild-Tyler-Smith/p/book/9780815341482">Human Evolutionary Genetics, 2nd edition</a>. I this book is a fantastic resource if you want a bird’s eye view of the breadth of topics in human genetics. It also provides important references, which are really handy if you wanted to find papers for more in-depth study.<a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>From the definition of covariance. <span class="math inline">\(cov(X,Y) = \mathbb{E}(XY) - \mathbb{E}(X)\mathbb{E}(Y)\)</span>.<a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>This is pretty straightforward but I always like to explicitly show the statistical statements underlying such expressions. Let’s denote <span class="math inline">\(X^A\)</span> as the genotype at locus A for a randomly sampled chromosome in the meta-population at the time of admixture. Then, <span class="math inline">\(f_A = \mathbb{E}(X^A)\)</span>. Let’s further denote the ancestry of the sampled chromosome with an indicator variable <span class="math inline">\(I\)</span> such that <span class="math inline">\(I = 1\)</span> indicates that the chromosome is from population 1 and so on. Then, <span class="math inline">\(\mathbb{E}(X^A) = \mathbb{E}(X^A | I = 1)\mathbb{P}(I = 1) + \mathbb{E}(X^A | I = 2)\mathbb{P}(I = 2)\)</span> and that equals to <span class="math inline">\(f_1^A \alpha + f_2^A (1 - \alpha)\)</span>.<a href="#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p>The frequency differences are themselves a function of the <span class="math inline">\(F_{st}\)</span> (or the degree of divergence) between the parental populations.<a href="#fnref4" class="footnote-back">↩︎</a></p></li>
+<li id="fn5"><p>Falconer DS, Mackay TFC. Introduction to Quantitative Genetics (4th Edition). vol. 12. 1996.<a href="#fnref5" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>

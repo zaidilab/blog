@@ -1,0 +1,112 @@
+---
+title: "A general model for the bias in variant effect sizes due to population structure"
+author: "admin"
+date: '2021-02-01'
+output:
+  html_document:
+    df_print: paged
+categories: blog
+tags:
+- effect size
+- genetic value
+- LD
+- population structure
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2021-02-01T21:52:39-05:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+slug: a-general-model-for-the-bias-in-variant-effect-sizes-due-to-population-structure
+---
+
+
+
+<div id="motivation" class="section level3">
+<h3>Motivation</h3>
+<p>The effects of population structure in GWAS (genome-wide association studies) have been well-studied. It’s one of those problems that on a surface level is quite easy to grasp intuitively. And that sort of understanding is fine for most practical purposes. However, there’s still a lot of confusion around how population structure impacts/biases variant effect sizes, even among geneticists and particularly with respect to the difference between genetic and environmental stratification. I think some of this stems from a lack of good/easy/clear statistical descriptions of the effect of population stratification on GWAS. I worked this out while working on a recent paper <a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> so I decided to post it in case others find it helpful.</p>
+</div>
+<div id="the-phenotype-model" class="section level3">
+<h3>The phenotype model</h3>
+<p>We begin by stating a generative model for some heritable phenotype <span class="math inline">\(y\)</span>:</p>
+<p><span class="math display">\[\begin{aligned}
+y = \mu + g + s + e
+\end{aligned}\]</span></p>
+<p>Here, <span class="math inline">\(\mu\)</span> is the mean phenotypic value in the population, <span class="math inline">\(g\)</span> is the genotypic value (or true polygenic score), <span class="math inline">\(s\)</span> is some environmental effect (I’m only assuming one here), and <span class="math inline">\(e\)</span> is random error. Furthermore, <span class="math inline">\(g = \sum_{i = 1}^m \beta_i x_i\)</span>, where <span class="math inline">\(x_i\)</span> is the genotype and <span class="math inline">\(\beta_i\)</span> is the (true) effect size of the <span class="math inline">\(i^{th}\)</span> SNP summed over <span class="math inline">\(m\)</span> causal variants.</p>
+</div>
+<div id="the-estimated-effect-size-of-a-variant" class="section level3">
+<h3>The estimated effect size of a variant</h3>
+<p>The ordinary least squares (OLS) effect size of a predictor <span class="math inline">\(X\)</span> on some response <span class="math inline">\(Y\)</span> is <span class="math inline">\(\frac{cov(Y,X)}{var(X)}\)</span>. Thus, in a GWAS with population structure, the effect of the <span class="math inline">\(j^{th}\)</span> (test) variant is:</p>
+<p><span class="math display">\[\begin{aligned}
+\hat{\beta_j} &amp; = \frac{cov(y,x_j)}{var(x_j)} \\
+&amp; = \frac{cov(\mu + g + s + e, x_j)}{var(x_j)} \\
+&amp; = \frac{cov(\mu,x_j) + cov(g,x_j) + cov(s,x_j) + cov(e,x_j)}{var(x_j)}
+\end{aligned}\]</span></p>
+<p>In expectation, <span class="math inline">\(cov(\mu,x_j) = 0\)</span> because <span class="math inline">\(\mu\)</span> is a constant, and <span class="math inline">\(cov(e,x_j) = 0\)</span> because <span class="math inline">\(e\)</span> is random with respect to <span class="math inline">\(x_j\)</span>. Thus,</p>
+<p><span class="math display">\[\begin{aligned}
+\mathbb{E}(\hat{\beta_j}) &amp; = \frac{cov(g,x_j) + cov(s,x_j)}{var(x_j)}
+\end{aligned}\]</span></p>
+<p>Now, we know that <span class="math inline">\(g = \sum_{i=1}^m \beta_i x_i\)</span>. Thus, we can write <span class="math inline">\(cov(g,x_j)\)</span> as:</p>
+<p><span class="math display">\[\begin{aligned}
+cov(g, x_j) &amp; = cov(\sum_{i = 1}^m \beta_ix_i, x_j) \\
+&amp; = cov(\beta_1x_1, x_j) + cov(\beta_2x_2, x_j) + ... \\
+&amp; ~~~ + cov(\beta_jx_j, x_j) + \cdot\cdot\cdot + cov(\beta_mx_m, x_j) \\
+&amp; = \beta_1 cov(x_1, x_j) + \beta_2 cov(x_2, x_j) + \cdot\cdot\cdot \\
+&amp; ~~~ + \beta_j cov(x_j, x_j) + \cdot\cdot\cdot + \beta_m cov(x_m, x_j) \\
+&amp; = \beta_j var(x_j) + \sum_{i = 1,i \neq{j}}^m \beta_i cov(x_i, x_j)
+\end{aligned}\]</span></p>
+<p>And the expected estimated effect size becomes:</p>
+<p><span class="math display">\[\begin{aligned}
+\mathbb{E}(\hat{\beta_j}) &amp; = \frac{cov(g,x_j) + cov(s,x_j)}{var(x_j)} \\
+&amp; = \frac{\beta_j var(x_j) + \sum_{i = 1, i \neq{j}}^m \beta_i cov(x_i, x_j) + cov(s, x_j)}{ var(x_j) } \\
+&amp; = \beta_j ~~~ + \frac{\sum_{i=1, i \neq{j}}^m \beta_i cov(x_i, x_j)}{var(x_j)} + \frac{cov(s, x_j)}{ var(x_j)}
+\end{aligned}\]</span></p>
+<p>Thus, the expected effect size estimate of a variant in a GWAS with population structure can be written as a sum of its own true effect size <span class="math inline">\(\beta_j\)</span> and two sources of bias:</p>
+<ol style="list-style-type: decimal">
+<li><p><span class="math inline">\(\frac{\sum_{i=1, i \neq{j}}^m \beta_i cov(x_i, x_j)}{var(x_j)}\)</span>, from background genetic effects (aka genetic stratification).</p></li>
+<li><p><span class="math inline">\(\frac{cov(s,x_j)}{var(x_j)}\)</span> from confounding environmental effects (aka environmental stratification).</p></li>
+</ol>
+</div>
+<div id="genetic-stratification" class="section level3">
+<h3>Genetic stratification</h3>
+<p>Population structure induces long-range LD (linkage disequilibirum) between variants across the genome. This causes the estimated effect size of the test variant <span class="math inline">\(j\)</span> to be influenced by the effect of all other causal variants (weighted by their LD with the test variant). This effect is often referred to as background genetic effect or genetic stratification. The total bias due to this effect is: <span class="math inline">\(\frac{\sum_{i=1, i \neq{j}}^m \beta_i cov(x_i, x_j)}{var(x_j)}\)</span>.</p>
+<p>In a panmictic population, <span class="math inline">\(cov(x_i, x_j)\)</span> will be very small or zero in expectation as long as the <span class="math inline">\(i^{th}\)</span> and <span class="math inline">\(j^{th}\)</span> variants are not physically close to each other. As the population becomes more and more structured, the overall LD between the test variant and all other causal variants, and therefore, the bias due to background genetic effects increases. Note, however, that if the effect size of the test variant is small (a realistic assumption), then, we can simply write this (background) term as:</p>
+<p><span class="math display">\[\begin{aligned}
+&amp; \frac{\sum_{i=1, i \neq{j}}^m \beta_i cov(x_i, x_j)}{var(x_j)} \\
+\approx &amp; \frac{\sum_{i = 1}^m \beta_i cov(x_i, x_j)}{var(x_j)} \\
+\approx &amp; cov(g,x_j)
+\end{aligned}\]</span></p>
+<p>In other words, the bias due to background genetic effects can also be thought of as coming from the correlation between the test variant and the genotypic values (or true polygenic scores) in the population.</p>
+</div>
+<div id="environmental-stratification" class="section level3">
+<h3>Environmental stratification</h3>
+<p>Any (known and unknown) environmental factor (<span class="math inline">\(s\)</span>) that (a) affects the phenotype and (b) is correlated with the test variant (i.e. if <span class="math inline">\(cov(s, x_j) \neq{0}\)</span>), will also add to the bias in its effect size estimate. This bias can either be positive or negative depending on the sign of <span class="math inline">\(cov(s, x_j)\)</span>.</p>
+<p>To illustrate, imagine a phenotype (let’s say height) which is influenced by the latitude at which individuals live such that people in the north tend to be taller and people in the south tend to be shorter (for whatever reason). Let’s denote the latitude of the <span class="math inline">\(k^{th}\)</span> individual as <span class="math inline">\(z_k\)</span> and the effect size of latitude on the phenotype as <span class="math inline">\(\gamma\)</span> such that <span class="math inline">\(s_k = \gamma z_k\)</span>. Then, <span class="math inline">\(cov(s,x_j) = cov(\gamma z,x_j) = \gamma cov(z,x_j)\)</span>. Thus, the contribution of environmental stratification depends on (a) the correlation between the variant frequency and the environmental effect (i.e. <span class="math inline">\(cov(z, x_j)\)</span>, which varies across variants), and (b) the effect size of the environment <span class="math inline">\(\gamma\)</span>, which affects all variants equally.</p>
+<p>This is demonstrated in the figure below, which shows the true effect size on the x-axis and estimated effect size on the y-axis with colors representing the direction and magnitude of the correlation between frequency and latitude.</p>
+<div class="float">
+<img src="/media/posts/stratification_esizes.png" alt="Figure adapted from Zaidi and Mathieson eLife 2020" />
+<div class="figcaption">Figure adapted from Zaidi and Mathieson eLife 2020</div>
+</div>
+<p>Notice a few things:</p>
+<ol style="list-style-type: decimal">
+<li><p>The effect size of any variant whose frequency is correlated with latitude (i.e. for which <span class="math inline">\(cov(z, x_j) \neq 0\)</span>) tends to deviate away from the diagonal (the true effect size).</p></li>
+<li><p>The effect size of alleles that are positively correlated with latitude (red colors) tends to be inflated (lies above the diagonal) whereas alleles that are negatively correlated with latitude (blue colors) tend to be biased downwards (below the diagonal).</p></li>
+<li><p>The degree of this bias is greater for variants that are more strongly correlated with latitude (darker colors).</p></li>
+</ol>
+<p>In summary, the estimated effect size of the <span class="math inline">\(j^{th}\)</span> variant can be upwards or downwards, depending on the direction and magnitude of <span class="math inline">\(cov(s,x_j) = \gamma cov(z,x_j)\)</span>.</p>
+<p>Technically, the allele frequency of a given variant could be correlated with an environmental effect (and therefore bias its effect size) even in unstructured/randomly mating populations (just by chance). But, this is very unlikely in an unstructured population. With more structure in the population, the distribution of allele frequencies in the population becomes less random, increasing the probability that they will be correlated with environmental effects. The LD between causal variants will increase as well (multi-locus Wahlund effect). Altogether, population structure will introduce bias in the effect size through both background genetic effects and environmental stratification.</p>
+<div id="acknowledgements" class="section level4">
+<h4>Acknowledgements</h4>
+<p>Thanks to (Trang Le)[<a href="https://twitter.com/trang1618" class="uri">https://twitter.com/trang1618</a>] for reading through a draft of this post and giving feedback.</p>
+</div>
+</div>
+<div class="footnotes footnotes-end-of-document">
+<hr />
+<ol>
+<li id="fn1"><p><a href="https://elifesciences.org/articles/61548">Zaidi &amp; Mathieson, Demographic history mediates the effect of stratification on polygenic scores. eLife 2020;9:e61548</a><a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+</ol>
+</div>
