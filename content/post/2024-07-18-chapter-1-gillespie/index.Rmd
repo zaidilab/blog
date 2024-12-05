@@ -250,8 +250,8 @@ Each generation, females will receive one X chromosome from both parents, wherea
 | Generation | Female Freq | Male Freq. |
 |:--------:|:------:|:---------:|
 |    1    |   \( p_f \)  |   \( p_m \)  | 
-|    2    |   \( \begin{array}{@{}c@{}} \dfrac{p_f - p_m}{2} \end{array} \)  |   \( p_f \)  | 
-|    3    |   \( \begin{array}{@{}c@{}} (\dfrac{p_f - p_m}{2}) + \dfrac{p_f}{2} \end{array} \)   |   \(\begin{array}{@{}c@{}} \dfrac{p_f - p_m}{2} \end{array} \)  | 
+|    2    |  $\frac{p_f - p_m}{2}$  |   $p_f$  | 
+|    3    |   $\frac{p_f - p_m}{2} + \frac{p_f}{2}$   |   $\frac{p_f - p_m}{2}$  | 
 
 If we start with a population in which all females are $A_1A_1$ and all males are $A_2$ (ie females have an $A_1$ allele frequency of 1 and males have a frequency of 0), we can calculate the allele frequencies for subsequent generations based on the pattern we have shown above:
 
