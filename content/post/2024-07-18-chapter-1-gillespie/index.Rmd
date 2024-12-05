@@ -29,28 +29,27 @@ We can start by listing out all possible genotype combinations for each allele. 
 
 We can keep writing out possible combinations until we see a pattern arise.
 
-Then, we can see a pattern. We can split the genotypes into n homozygotes (ex: 11 22) and $n \choose 2$ heterozygotes (ex: 12), such that for n alleles we have, $n + {n \choose 2}$ possible genotypes, where we know ${n \choose 2} = \frac{n(n-1)}{2}$. So, 
-$$n + \frac{n(n-1)}{2} = \frac{2n + n(n-1)}{2} = \frac{2n + n^2 - n}{2} = \frac{n^2 + n}{2} = \frac{n(n+1)}{2}$$. 
+Then, we can see a pattern. We can split the genotypes into n homozygotes (ex: 11 22) and $n \choose 2$ heterozygotes (ex: 12), such that for n alleles we have, $n + {n \choose 2}$ possible genotypes, where we know ${n \choose 2} = \frac{n(n-1)}{2}$. So, $$n + \frac{n(n-1)}{2} = \frac{2n + n(n-1)}{2} = \frac{2n + n^2 - n}{2} = \frac{n^2 + n}{2} = \frac{n(n+1)}{2}$$.
 
 Then, for n alleles we have $\frac{n(n+1)}{2}$ genotypes.
 
 ## Problem 1.2 - Sol
 
-Let us denote the probability of drawing an S allele given that the individual has genotype SS as p(S|SS), the probability of drawing S if an individual has SF genotype as p(S|SF), and the probability of drawing S if an individual is SI as p(S|SI). Thus, the frequency for one of the three alkaline phosphatase alleles can be described as follows:
+Let us denote the probability of drawing an S allele given that the individual has genotype SS as p(S\|SS), the probability of drawing S if an individual has SF genotype as p(S\|SF), and the probability of drawing S if an individual is SI as p(S\|SI). Thus, the frequency for one of the three alkaline phosphatase alleles can be described as follows:
 
-S = p(S|SS) + p(S|SF) + p(S|SI)
+S = p(S\|SS) + p(S\|SF) + p(S\|SI)
 
 A similar pattern can be repeated for the other 2 alleles. To calculate each of the frequencies we can just use the frequencies of each genotype from Table 1.2 (reproduced below):
 
 | Genotype | Number | Frequency | Expected |
 |:--------:|:------:|:---------:|:--------:|
-|    SS    |   141  |   0.4247  |  0.4096  |
-|    SF    |   111  |   0.3343  |  0.3507  |
-|    FF    |   28   |   0.0843  |  0.0751  |
-|    SI    |   32   |   0.0964  |  0.1101  | 
-|    FI    |   15   |   0.0452  |  0.0471  |
-|    II    |   5    |   0.0151  |  0.0074  |
-|   Total  |   332  |   1.000   |   1.000  |
+|    SS    |  141   |  0.4247   |  0.4096  |
+|    SF    |  111   |  0.3343   |  0.3507  |
+|    FF    |   28   |  0.0843   |  0.0751  |
+|    SI    |   32   |  0.0964   |  0.1101  |
+|    FI    |   15   |  0.0452   |  0.0471  |
+|    II    |   5    |  0.0151   |  0.0074  |
+|  Total   |  332   |   1.000   |  1.000   |
 
 Based on Table 1.2 and the example written out above, the frequencies for each of the alleles is:\
 
@@ -60,13 +59,11 @@ $$
 = & (1 \times 0.4247) + (1/2 \times 0.3343) + (1/2 \times 0.0964) \\
 = & 0.6401
 \end{aligned}
-$$
-Similarly,
+$$ Similarly,
 
-$\mathbb{F} = (1 \times 0.0843) + (1/2 \times 0.3343) + (1/2 \times 0.0452) = 0.2741$
-$\mathbb{I} = (1 \times 0.0151) + (1/2 \times 0.0964) + (1/2 \times 0.0452) = 0.0859$
+$\mathbb{F} = (1 \times 0.0843) + (1/2 \times 0.3343) + (1/2 \times 0.0452) = 0.2741$ $\mathbb{I} = (1 \times 0.0151) + (1/2 \times 0.0964) + (1/2 \times 0.0452) = 0.0859$
 
-As a sanity check, you can see that the frequencies of the three alleles add up to 1 since they make up all of the alleles in the population. 
+As a sanity check, you can see that the frequencies of the three alleles add up to 1 since they make up all of the alleles in the population.
 
 ## Problem 1.3 - Nicole
 
@@ -120,7 +117,6 @@ Thus, we end up attaining the Hardy-Weinberg frequencies.
 
 **Q. Graph the frequencies of homozygotes and heterozygotes as a function of allele frequency p. At what allele frequency is the frequency of the heterozygotes maximized?**
 
-
 ```{r problem1.4}
 # Define the sequence of allele frequencies (p) from 0 to 1
 p <- seq(0, 1, length.out = 20)
@@ -149,24 +145,23 @@ legend("topright", legend = c("Homozygote A1A1", "Homozygote A2A2", "Heterozygot
 
 let's explore how genotype frequencies change with different allele frequencies (p).
 
-1. **Allele Frequencies (p and q)**: p represents the frequency of allele A1 and ranges from 0 to 1. q is the frequency of allele A2, calculated as 1 - p.
+1.  **Allele Frequencies (p and q)**: p represents the frequency of allele A1 and ranges from 0 to 1. q is the frequency of allele A2, calculated as 1 - p.
 
-2. **Genotype Frequencies**: Using Hardy-Weinberg equilibrium, the frequencies of the genotypes are:
+2.  **Genotype Frequencies**: Using Hardy-Weinberg equilibrium, the frequencies of the genotypes are:
 
- - Homozygote A1A1: p^2\n
- 
- - Homozygote A2A2: q^2\n
+-   Homozygote A1A1: p\^2\n
 
- - Heterozygote A1A2: 2pq
+-   Homozygote A2A2: q\^2\n
 
-3. **Plotting**: The frequencies of these genotypes are plotted against the allele frequency p using different colors. A legend is added to identify the genotypes.
+-   Heterozygote A1A2: 2pq
 
-From the plot, we can see how the frequencies of the genotypes change as the allele frequency p changes from 0 to 1. When p is low, the frequency of homozygote A2A2 is high, and as p increases, the frequency of homozygote A1A1 increases. The frequency of the heterozygote A1A2 genotype peaks at p = 0.5. This can be estimated using the derivation, as f(p)=2 * p *(1-p). The function reaches its maximum at 0.5 because if we do f'(p) = 0, then p=0.5. 
+3.  **Plotting**: The frequencies of these genotypes are plotted against the allele frequency p using different colors. A legend is added to identify the genotypes.
 
+From the plot, we can see how the frequencies of the genotypes change as the allele frequency p changes from 0 to 1. When p is low, the frequency of homozygote A2A2 is high, and as p increases, the frequency of homozygote A1A1 increases. The frequency of the heterozygote A1A2 genotype peaks at p = 0.5. This can be estimated using the derivation, as f(p)=2 \* p \*(1-p). The function reaches its maximum at 0.5 because if we do f'(p) = 0, then p=0.5.
 
 ## Problem 1.5 - Parisa
 
-Graph the ratio of the frequencies   A1A2 heterozygotes to A2A2 homozygotes as a function of q using both the exact and approximate formulas. 
+Graph the ratio of the frequencies A1A2 heterozygotes to A2A2 homozygotes as a function of q using both the exact and approximate formulas.
 
 ```{r problem1.5}
 # Define the sequence of allele frequencies (q) from 0 to 0.5
@@ -191,25 +186,24 @@ legend("topright", legend = c("Exact Ratio", "Approximate Ratio"),
 
 let's compare the exact and approximate ratios of heterozygote A1A2 to homozygote A2A2.
 
-1. **Allele Frequencies (q)**:q represents the frequency of allele A2 and ranges from 0 to 0.5.
+1.  **Allele Frequencies (q)**:q represents the frequency of allele A2 and ranges from 0 to 0.5.
 
-2. **Exact Ratio Calculation**: The exact ratio of heterozygote A1A2 to homozygote A2A2 is calculated using the formula (2(1-q)q) / q^2.
+2.  **Exact Ratio Calculation**: The exact ratio of heterozygote A1A2 to homozygote A2A2 is calculated using the formula (2(1-q)q) / q\^2.
 
-3. **Approximate Ratio Calculation**: The approximate ratio of heterozygote A1A2 to homozygote A2A2 is calculated using the formula 2 / q.
+3.  **Approximate Ratio Calculation**: The approximate ratio of heterozygote A1A2 to homozygote A2A2 is calculated using the formula 2 / q.
 
-4. **Plotting**: Both the exact and approximate ratios are plotted against the allele frequency q using different colors and line types. A legend is added to identify the ratios.
+4.  **Plotting**: Both the exact and approximate ratios are plotted against the allele frequency q using different colors and line types. A legend is added to identify the ratios.
 
-From the plot, we can observe that both the exact and approximate ratios of heterozygote A1A2 to homozygote A2A2 increase as the allele frequency q decreases. 
+From the plot, we can observe that both the exact and approximate ratios of heterozygote A1A2 to homozygote A2A2 increase as the allele frequency q decreases.
 
 The approximate ratio (orange dashed line) is a good estimate of the exact ratio (purple solid line), especially for small values of q. As q approaches 0, the ratios diverge slightly, but the approximation remains fairly accurate.
 
 This demonstrates how a simple approximation can be used to estimate the ratio without significantly losing accuracy.
 
-
 ## Problem 1.6 - Sol
 
-A copy of Table 1.2 from the text is available under problem 1.2 above. The $\chi^2$ test for the agreement of the data in Table 1.2 with Hardy-Weinberg law can be conducted manually using the $\chi^2$ formula: \[\chi^2=\sum\frac{(O_i-E_i)^2}{E_i}\]
-To calculate the $\chi^2$ value for each genotype we will first multiply the values in the Expected frequency column and the Frequency column from Table 1.2 by 332 (the total number of individuals). The expected frequencies is what we would expect to observe under Hardy-Weinberg law, whereas Frequency is what is actually observed. Then we will calculate the $\chi^2$ value for each genotype and add the values together to get the total $\chi^2$ value as follows:
+A copy of Table 1.2 from the text is available under problem 1.2 above. The $\chi^2$ test for the agreement of the data in Table 1.2 with Hardy-Weinberg law can be conducted manually using the $\chi^2$ formula: $$\chi^2=\sum\frac{(O_i-E_i)^2}{E_i}$$ To calculate the $\chi^2$ value for each genotype we will first multiply the values in the Expected frequency column and the Frequency column from Table 1.2 by 332 (the total number of individuals). The expected frequencies is what we would expect to observe under Hardy-Weinberg law, whereas Frequency is what is actually observed. Then we will calculate the $\chi^2$ value for each genotype and add the values together to get the total $\chi^2$ value as follows:
+
 ```{r problem1.6}
 #Data columns taken from Table 1.2:
 Genotypes<-c("SS","SF","FF","SI","FI","II")
@@ -234,36 +228,37 @@ Chi_Squared_Sum
 ```
 
 Once we have calculated the $\chi^2$ above (4.065) we can use a chi-square table or the following code to calculate the p-value:
+
 ```{r problem1.6_part2}
 #The following code subtracts the area under the curve corresponding to the chi-squared value from 1 to get the p value:
 pvalue=1-pchisq(Chi_Squared_Sum, 3) # df=3
 pvalue
 ```
-The reason that we are using three degrees of freedom instead of 5 (n-1) because the genotypes are not independent; we've already used information about the allele frequencies to calculate the expected genotype frequencies and the frequencies of alleles are constrained because they must add up to 1. Generally speaking, the degrees of freedom in a Hardy-Weinberg test = #genotypes - #alleles. 
 
+The reason that we are using three degrees of freedom instead of 5 (n-1) because the genotypes are not independent; we've already used information about the allele frequencies to calculate the expected genotype frequencies and the frequencies of alleles are constrained because they must add up to 1. Generally speaking, the degrees of freedom in a Hardy-Weinberg test = #genotypes - #alleles.
 
-Based on the p-value (0.255) there is insufficient evidence that the observed frequencies differ significantly from those predicted by Hardy-Weinberg law. 
+Based on the p-value (0.255) there is insufficient evidence that the observed frequencies differ significantly from those predicted by Hardy-Weinberg law.
 
 ## Problem 1.7 - Sol
+
 Each generation, females will receive one X chromosome from both parents, whereas males will only receive one X chromosome from their mothers. Therefore each generation the males will have the same allele frequency for X-linked alleles as the females in the previous generation, but females will have an allele frequency that is the average from males and females in the previous generation. Therefore with starting allele frequencies of $p_f$ in females and $p_m$ in males, 3 generations of allele frequencies would be as follows:
 
-| Generation | Female Freq | Male Freq. |
-|:--------:|:------:|:---------:|
-|    1    |   \( p_f \)  |   \( p_m \)  | 
-|    2    |  $\frac{p_f - p_m}{2}$  |   $p_f$  | 
-|    3    |   $\frac{p_f - p_m}{2} + \frac{p_f}{2}$   |   $\frac{p_f - p_m}{2}$  | 
+| Generation |              Female Freq              |      Male Freq.       |
+|:----------:|:-------------------------------------:|:---------------------:|
+|     1      |                 $p_f$                 |         $p_m$         |
+|     2      |         $\frac{p_f - p_m}{2}$         |         $p_f$         |
+|     3      | $\frac{p_f - p_m}{2} + \frac{p_f}{2}$ | $\frac{p_f - p_m}{2}$ |
 
 If we start with a population in which all females are $A_1A_1$ and all males are $A_2$ (ie females have an $A_1$ allele frequency of 1 and males have a frequency of 0), we can calculate the allele frequencies for subsequent generations based on the pattern we have shown above:
 
-
 | Generation | F. Freq | M. Freq | F-M Freq. |
-|:----------:|:------:|:---------:|:--------:|
-|    1     |   1  |   0  |  1  |
-|    2    |   1/2  |   1  |  -1/2  |
-|    3    |   3/4   |   1/2  |  1/4  |
-|    4    |   5/8   |   3/4  |  -1/8  | 
-|    5    |   11/16   |   5/8  |  1/16  |
-|    6    |   21/32    |   11/16  |  -1/32  |
+|:----------:|:-------:|:-------:|:---------:|
+|     1      |    1    |    0    |     1     |
+|     2      |   1/2   |    1    |   -1/2    |
+|     3      |   3/4   |   1/2   |    1/4    |
+|     4      |   5/8   |   3/4   |   -1/8    |
+|     5      |  11/16  |   5/8   |   1/16    |
+|     6      |  21/32  |  11/16  |   -1/32   |
 
 As mentioned above, you can see in the table that each generation males have the same $A_1$ frequency as females in the generation prior and females have the averaged $A_1$ frequency of males and females in the generation prior. Due to this, each generation the difference in $A_1$ frequency between males and females is halved. I have graphed 8 generations below:
 
@@ -297,4 +292,4 @@ MF_Graph
 
 As can be seen in the figure, eventually both males and females approach the same value which is approximately 0.66 or 2/3. This makes sense because females have 2/3 of the X chromosomes in the population (XX) whereas males only have 1/3 of the X chromosomes (XY). Therefore since in the beginning all of females were $A_1A_1$ 2/3 of the X chromosomes in the entire population were $A_1$ and only 1/3 were $A_2$ since all males started off as $A_2$. Therefore as time goes on, both males and females approach the starting frequency of $A_1$ in the entire population (2/3). If we instead graphed the frequency of $A_2$ in the population, both males and females would converge on an $A_2$ frequency of 1/3, since originally 1/3 of the alleles at this locus in the population were $A_2$ (since in Gen 1 all males were $A_2$)
 
-```
+\`\`\`
