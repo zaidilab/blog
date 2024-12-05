@@ -1,4 +1,4 @@
-baseurl: "https://arslanzaidi.com"  # please update this to your actual URL
+baseurl: "https://zaidilabblog.netlify.app"  # please update this to your actual URL
 languageCode: "en-us"
 title: "The Zaidi Lab blog"
 theme: "hugo-xmin"
